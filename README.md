@@ -54,7 +54,7 @@ pnpm run apps:client:dev
 ## Lancer la doc swagger
 
 ```bash
-pnpm run apps:swagger:start
+pnpm run docs:swagger:start
 ```
 
 Le serveur Swagger sera accessible à l'adresse `http://localhost:3001/api-docs`.
@@ -70,6 +70,12 @@ pnpm run apps:api-mock:start
 ```
 
 Le mock de l'API sera accessible à l'adresse `http://localhost:8080`. Il ne doit pas être lancé en même temps que le serveur de l'application.
+
+## Lancer l'application serveur
+
+```bash
+pnpm run apps:server:dev
+```
 
 # Architecture
 
