@@ -27,6 +27,6 @@ const swaggerSpec = YAML.load('./swagger.yaml');
 app.use('/api-docs', swaggerui.serve, swaggerui.setup(swaggerSpec));
 
 // Start the server
-app.listen(3001, () => {
-  console.log('Swagger UI available at http://localhost:3001/api-docs');
+app.listen(3002, () => {
+  console.log('Swagger UI available at http://localhost:3002/api-docs');
 });

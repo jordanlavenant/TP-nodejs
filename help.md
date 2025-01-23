@@ -1,0 +1,1 @@
+calcul de probabilité de victoire via une méthode static
