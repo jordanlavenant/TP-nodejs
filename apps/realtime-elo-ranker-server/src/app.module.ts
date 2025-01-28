@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PlayerModule } from './player/player.module';
 import { MatchModule } from './match/match.module';
 import { RankingModule } from './ranking/ranking.module';
+import path from 'path';
 
 @Module({
   imports: [

@@ -1,17 +1,22 @@
-import { Controller, Get, HttpCode, Post } from '@nestjs/common';
+import { Controller, Get, HttpCode, Post, Body } from '@nestjs/common';
+import { PlayerService } from './player.service';
+import { Player } from '../entities/player.entity';
 
-@Controller('player')
+
+@Controller('api')
 export class PlayerController {
+  constructor(private readonly appService: PlayerService) {}
 
-  @Get()
+  // TODO: delete this useless endpoint
+  @Get('players')
   @HttpCode(200)
-  findAll(): string {
-    return 'This action returns all players';
+  async findAll(): Promise<Player[]> {
+    return this.appService.findAll();
   }
 
-  @Post()
-  @HttpCode(204)
-  create(): string {
-    return 'This action adds a new player';
+  @Post('player')
+  @HttpCode(200)
+  async create(@Body() player: Player): Promise<Player> {
+    return this.appService.create(player);
   }
 }
