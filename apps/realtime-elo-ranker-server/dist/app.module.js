@@ -11,9 +11,9 @@ const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const typeorm_1 = require("@nestjs/typeorm");
-const player_module_1 = require("./player/player.module");
-const match_module_1 = require("./match/match.module");
-const ranking_module_1 = require("./ranking/ranking.module");
+const player_module_1 = require("./api/player/player.module");
+const match_module_1 = require("./api/match/match.module");
+const ranking_module_1 = require("./api/ranking/ranking.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
