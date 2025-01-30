@@ -3,6 +3,7 @@ import { Repository } from 'typeorm';
 export declare class PlayerService {
     private readonly players;
     constructor(players: Repository<Player>);
+    findOne(id: string): Promise<Player | null>;
     findAll(): Promise<Player[]>;
     create(player: Player): Promise<Player>;
 }

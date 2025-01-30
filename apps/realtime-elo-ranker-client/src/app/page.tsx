@@ -71,12 +71,7 @@ export default function Home() {
   const updateLadderData = useCallback((player: PlayerData) => {
     setLadderData((prevData) => {
       return quickSortPlayers(
-        prevData.map((p) => {
-          if (p.id === player.id) {
-            return player;
-          }
-          return p;
-        })
+        prevData.map((p) => (p.id === player.id ? player : p))
       );
     });
   }, []);

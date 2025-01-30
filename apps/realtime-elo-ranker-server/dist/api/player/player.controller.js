@@ -20,21 +20,24 @@ let PlayerController = class PlayerController {
     constructor(appService) {
         this.appService = appService;
     }
-    async findAll() {
-        return this.appService.findAll();
-    }
     async create(player) {
+        if (!player.id) {
+            throw new common_1.HttpException({
+                code: 0,
+                message: "L'identifiant du joueur n'est pas valide"
+            }, common_1.HttpStatus.BAD_REQUEST);
+        }
+        const findPlayer = await this.appService.findOne(player.id);
+        if (findPlayer) {
+            throw new common_1.HttpException({
+                code: 0,
+                message: "Le joueur existe déjà"
+            }, common_1.HttpStatus.CONFLICT);
+        }
         return this.appService.create(player);
     }
 };
 exports.PlayerController = PlayerController;
-__decorate([
-    (0, common_1.Get)('players'),
-    (0, common_1.HttpCode)(200),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], PlayerController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Post)('player'),
     (0, common_1.HttpCode)(200),

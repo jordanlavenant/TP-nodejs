@@ -25,13 +25,7 @@ let MatchService = class MatchService {
         return this.matches.find();
     }
     async create(match) {
-        if (!match.winner || !match.loser) {
-            return Promise.reject({ status: 400, message: "Les joueurs ne sont pas valides" });
-        }
-        else {
-            this.matches.save(match);
-            return Promise.resolve(match);
-        }
+        return this.matches.save(match);
     }
 };
 exports.MatchService = MatchService;

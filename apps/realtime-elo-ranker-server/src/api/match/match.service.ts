@@ -16,12 +16,6 @@ export class MatchService {
   }
 
   async create(match: Match): Promise<Match> {
-    if (!match.winner || !match.loser) {
-      return Promise.reject({ status: 400, message: "Les joueurs ne sont pas valides" });
-    } else {
-      // TODO  update the ranking of each player
-      this.matches.save(match);
-      return Promise.resolve(match);
-    }
+    return this.matches.save(match);
   }
 }

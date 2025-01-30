@@ -21,20 +21,14 @@ let PlayerService = class PlayerService {
     constructor(players) {
         this.players = players;
     }
+    async findOne(id) {
+        return this.players.findOne({ where: { id } });
+    }
     async findAll() {
         return this.players.find();
     }
     async create(player) {
-        if (!player.id) {
-            return Promise.reject({ status: 400, message: "	L'identifiant du joueur n'est pas valide" });
-        }
-        else if (await this.players.findOne({ where: { id: player.id } })) {
-            return Promise.reject({ status: 409, message: "Le joueur existe déjà" });
-        }
-        else {
-            this.players.save(player);
-            return Promise.resolve(player);
-        }
+        return this.players.save(player);
     }
 };
 exports.PlayerService = PlayerService;

@@ -24,6 +24,12 @@ let MatchController = class MatchController {
         return this.appService.findAll();
     }
     async create(match) {
+        if (!match.winner || !match.loser) {
+            throw new common_1.HttpException({
+                code: 0,
+                message: "Soit le gagnant, soit le perdant indiqué n'existe pas"
+            }, common_1.HttpStatus.UNPROCESSABLE_ENTITY);
+        }
         return this.appService.create(match);
     }
 };

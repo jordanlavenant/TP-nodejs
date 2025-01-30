@@ -17,7 +17,16 @@ let RankingController = class RankingController {
         this.appService = appService;
     }
     async findAll() {
-        return this.appService.findAll();
+        const players = await this.appService.findAll();
+        if (players.length === 0) {
+            throw new common_1.HttpException({
+                code: 0,
+                message: "Le classement n'est pas disponible car aucun joueur n'existe"
+            }, common_1.HttpStatus.NOT_FOUND);
+        }
+        else {
+            return players;
+        }
     }
 };
 exports.RankingController = RankingController;
