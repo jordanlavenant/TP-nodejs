@@ -18,9 +18,7 @@ let PlayerModule = class PlayerModule {
 exports.PlayerModule = PlayerModule;
 exports.PlayerModule = PlayerModule = __decorate([
     (0, common_1.Module)({
-        imports: [
-            typeorm_1.TypeOrmModule.forFeature([player_entity_1.Player]),
-        ],
+        imports: [typeorm_1.TypeOrmModule.forFeature([player_entity_1.Player])],
         controllers: [player_controller_1.PlayerController],
         providers: [player_service_1.PlayerService, player_listener_1.PlayerListener],
         exports: [player_service_1.PlayerService],

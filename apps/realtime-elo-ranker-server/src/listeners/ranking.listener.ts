@@ -1,6 +1,6 @@
-import { Injectable } from "@nestjs/common";
-import { OnEvent } from "@nestjs/event-emitter";
-import { RankingUpdateEvent } from "src/events/ranking.event";
+import { Injectable } from '@nestjs/common';
+import { OnEvent } from '@nestjs/event-emitter';
+import { RankingUpdateEvent } from 'src/events/ranking.event';
 
 @Injectable()
 export class RankingListener {

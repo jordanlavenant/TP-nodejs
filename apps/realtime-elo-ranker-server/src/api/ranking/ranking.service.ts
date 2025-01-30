@@ -5,7 +5,6 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class RankingService {
-
   constructor(
     @InjectRepository(Player)
     private readonly players: Repository<Player>,
@@ -14,8 +13,8 @@ export class RankingService {
   findAll(): Promise<Player[]> {
     return this.players.find({
       order: {
-        rank: 'DESC'
-      }
+        rank: 'DESC',
+      },
     });
   }
 }

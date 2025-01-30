@@ -5,7 +5,6 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class MatchService {
-
   constructor(
     @InjectRepository(Match)
     private readonly matches: Repository<Match>,

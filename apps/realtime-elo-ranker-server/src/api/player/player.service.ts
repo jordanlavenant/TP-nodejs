@@ -5,7 +5,6 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class PlayerService {
-
   constructor(
     @InjectRepository(Player)
     private readonly players: Repository<Player>,
@@ -28,7 +27,9 @@ export class PlayerService {
       if (players.length === 0) {
         return this.players.save(player);
       } else {
-        const avgRank = players.reduce((acc, player) => acc + player.rank, 0) / players.length;
+        const avgRank =
+          players.reduce((acc, player) => acc + player.rank, 0) /
+          players.length;
         player.rank = avgRank;
         return this.players.save(player);
       }

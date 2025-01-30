@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { AppService } from './app.service'
+import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PlayerModule } from './api/player/player.module';
 import { MatchModule } from './api/match/match.module';

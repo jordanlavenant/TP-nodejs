@@ -6,9 +6,7 @@ import { Player } from 'src/entities/player.entity';
 import { PlayerListener } from 'src/listeners/player.listener';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Player]),
-  ],
+  imports: [TypeOrmModule.forFeature([Player])],
   controllers: [PlayerController],
   providers: [PlayerService, PlayerListener],
   exports: [PlayerService],

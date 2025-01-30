@@ -24,8 +24,8 @@ let RankingService = class RankingService {
     findAll() {
         return this.players.find({
             order: {
-                rank: 'DESC'
-            }
+                rank: 'DESC',
+            },
         });
     }
 };

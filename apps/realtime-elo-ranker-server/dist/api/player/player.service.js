@@ -24,6 +24,9 @@ let PlayerService = class PlayerService {
     findOne(id) {
         return this.players.findOne({ where: { id } });
     }
+    playerExists(id) {
+        return this.findOne(id).then((player) => !!player);
+    }
     findAll() {
         return this.players.find();
     }
@@ -33,7 +36,8 @@ let PlayerService = class PlayerService {
                 return this.players.save(player);
             }
             else {
-                const avgRank = players.reduce((acc, player) => acc + player.rank, 0) / players.length;
+                const avgRank = players.reduce((acc, player) => acc + player.rank, 0) /
+                    players.length;
                 player.rank = avgRank;
                 return this.players.save(player);
             }

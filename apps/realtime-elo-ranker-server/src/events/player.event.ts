@@ -3,4 +3,4 @@ export class PlayerCreatedEvent {
     public readonly id: string,
     public readonly rank: number,
   ) {}
-  }
+}

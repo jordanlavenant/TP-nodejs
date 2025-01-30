@@ -1,33 +1,48 @@
-import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Res } from '@nestjs/common';
 import { Match } from 'src/entities/match.entity';
 import { MatchService } from './match.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { RankingUpdateEvent } from 'src/events/ranking.event';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { Error } from 'src/types/type';
+import { CreateMatchDto } from './dto/create-match.dto';
 
 @Controller('api')
-export class MatchController {  
+export class MatchController {
   constructor(
     private readonly appService: MatchService,
-    private readonly eventEmitter: EventEmitter2
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
-  // TODO: utiliser le Request
+  // TODO: retirer la méthode inutile
+  @Get('matches')
+  async findAll(@Res() res: Response): Promise<Response<Match[] | Error>> {
+    const matches = await this.appService.findAll();
+    if (matches.length === 0) {
+      return res.status(404).send({
+        code: 0,
+        message: "Aucun match n'a été joué",
+      }) as Response<Error>;
+    }
+    return res.status(200).send(matches) as Response<Match[]>;
+  }
+
   @Post('match')
-  @HttpCode(200)
-  create(@Body() match: Match, @Req() req: Request, @Res() res: Response): Response<Match | Error> {
-    if (!match.winner || !match.loser) {
+  create(
+    @Body() createMatchDto: CreateMatchDto,
+    @Res() res: Response,
+  ): Response<Match | Error> {
+    if (!createMatchDto.winner || !createMatchDto.loser) {
       return res.status(422).send({
         code: 0,
-        message: "Soit le gagnant, soit le perdant indiqué n'existe pas"
-      });
+        message: "Soit le gagnant, soit le perdant indiqué n'existe pas",
+      }) as Response<Error>;
     }
     this.eventEmitter.emit(
       'ranking.update',
-      new RankingUpdateEvent(match.winner, match.loser)
+      new RankingUpdateEvent(createMatchDto.winner, createMatchDto.loser),
     );
-    this.appService.create(match);
-    return res.status(200).send(match);
+    void this.appService.create(createMatchDto);
+    return res.status(200).send(createMatchDto) as Response<Match>;
   }
 }

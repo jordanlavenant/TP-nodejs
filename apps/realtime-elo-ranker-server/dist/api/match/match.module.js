@@ -17,9 +17,7 @@ let MatchModule = class MatchModule {
 exports.MatchModule = MatchModule;
 exports.MatchModule = MatchModule = __decorate([
     (0, common_1.Module)({
-        imports: [
-            typeorm_1.TypeOrmModule.forFeature([match_entity_1.Match]),
-        ],
+        imports: [typeorm_1.TypeOrmModule.forFeature([match_entity_1.Match])],
         controllers: [match_controller_1.MatchController],
         providers: [match_service_1.MatchService],
         exports: [match_service_1.MatchService],

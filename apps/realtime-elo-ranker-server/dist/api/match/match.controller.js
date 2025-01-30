@@ -14,34 +14,52 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MatchController = void 0;
 const common_1 = require("@nestjs/common");
-const match_entity_1 = require("../../entities/match.entity");
 const match_service_1 = require("./match.service");
 const event_emitter_1 = require("@nestjs/event-emitter");
 const ranking_event_1 = require("../../events/ranking.event");
+const create_match_dto_1 = require("./dto/create-match.dto");
 let MatchController = class MatchController {
     constructor(appService, eventEmitter) {
         this.appService = appService;
         this.eventEmitter = eventEmitter;
     }
-    create(match) {
-        if (!match.winner || !match.loser) {
-            throw new common_1.HttpException({
+    async findAll(res) {
+        const matches = await this.appService.findAll();
+        if (matches.length === 0) {
+            return res.status(404).send({
                 code: 0,
-                message: "Soit le gagnant, soit le perdant indiqué n'existe pas"
-            }, common_1.HttpStatus.UNPROCESSABLE_ENTITY);
+                message: "Aucun match n'a été joué",
+            });
         }
-        this.eventEmitter.emit('ranking.update', new ranking_event_1.RankingUpdateEvent(match.winner, match.loser));
-        this.appService.create(match);
+        return res.status(200).send(matches);
+    }
+    create(createMatchDto, res) {
+        if (!createMatchDto.winner || !createMatchDto.loser) {
+            return res.status(422).send({
+                code: 0,
+                message: "Soit le gagnant, soit le perdant indiqué n'existe pas",
+            });
+        }
+        this.eventEmitter.emit('ranking.update', new ranking_event_1.RankingUpdateEvent(createMatchDto.winner, createMatchDto.loser));
+        void this.appService.create(createMatchDto);
+        return res.status(200).send(createMatchDto);
     }
 };
 exports.MatchController = MatchController;
 __decorate([
-    (0, common_1.Post)('match'),
-    (0, common_1.HttpCode)(200),
-    __param(0, (0, common_1.Body)()),
+    (0, common_1.Get)('matches'),
+    __param(0, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [match_entity_1.Match]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], MatchController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Post)('match'),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [create_match_dto_1.CreateMatchDto, Object]),
+    __metadata("design:returntype", Object)
 ], MatchController.prototype, "create", null);
 exports.MatchController = MatchController = __decorate([
     (0, common_1.Controller)('api'),

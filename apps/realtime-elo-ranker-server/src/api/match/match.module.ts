@@ -5,9 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Match } from 'src/entities/match.entity';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Match]),
-  ],
+  imports: [TypeOrmModule.forFeature([Match])],
   controllers: [MatchController],
   providers: [MatchService],
   exports: [MatchService],
