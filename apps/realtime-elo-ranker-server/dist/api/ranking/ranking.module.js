@@ -12,6 +12,7 @@ const ranking_service_1 = require("./ranking.service");
 const ranking_controller_1 = require("./ranking.controller");
 const typeorm_1 = require("@nestjs/typeorm");
 const player_entity_1 = require("../../entities/player.entity");
+const player_listener_1 = require("../../listeners/player.listener");
 let RankingModule = class RankingModule {
 };
 exports.RankingModule = RankingModule;
@@ -21,7 +22,7 @@ exports.RankingModule = RankingModule = __decorate([
             typeorm_1.TypeOrmModule.forFeature([player_entity_1.Player]),
         ],
         controllers: [ranking_controller_1.RankingController],
-        providers: [ranking_service_1.RankingService],
+        providers: [ranking_service_1.RankingService, player_listener_1.PlayerListener],
         exports: [ranking_service_1.RankingService],
     })
 ], RankingModule);

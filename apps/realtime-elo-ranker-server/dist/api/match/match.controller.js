@@ -16,41 +16,36 @@ exports.MatchController = void 0;
 const common_1 = require("@nestjs/common");
 const match_entity_1 = require("../../entities/match.entity");
 const match_service_1 = require("./match.service");
+const event_emitter_1 = require("@nestjs/event-emitter");
+const ranking_event_1 = require("../../events/ranking.event");
 let MatchController = class MatchController {
-    constructor(appService) {
+    constructor(appService, eventEmitter) {
         this.appService = appService;
+        this.eventEmitter = eventEmitter;
     }
-    async findAll() {
-        return this.appService.findAll();
-    }
-    async create(match) {
+    create(match) {
         if (!match.winner || !match.loser) {
             throw new common_1.HttpException({
                 code: 0,
                 message: "Soit le gagnant, soit le perdant indiqué n'existe pas"
             }, common_1.HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        return this.appService.create(match);
+        this.eventEmitter.emit('ranking.update', new ranking_event_1.RankingUpdateEvent(match.winner, match.loser));
+        this.appService.create(match);
     }
 };
 exports.MatchController = MatchController;
-__decorate([
-    (0, common_1.Get)('matches'),
-    (0, common_1.HttpCode)(200),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], MatchController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Post)('match'),
     (0, common_1.HttpCode)(200),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [match_entity_1.Match]),
-    __metadata("design:returntype", Promise)
+    __metadata("design:returntype", void 0)
 ], MatchController.prototype, "create", null);
 exports.MatchController = MatchController = __decorate([
     (0, common_1.Controller)('api'),
-    __metadata("design:paramtypes", [match_service_1.MatchService])
+    __metadata("design:paramtypes", [match_service_1.MatchService,
+        event_emitter_1.EventEmitter2])
 ], MatchController);
 //# sourceMappingURL=match.controller.js.map

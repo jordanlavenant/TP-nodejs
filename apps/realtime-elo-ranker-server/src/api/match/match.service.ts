@@ -11,11 +11,11 @@ export class MatchService {
     private readonly matches: Repository<Match>,
   ) {}
 
-  async findAll(): Promise<Match[]> {
+  findAll(): Promise<Match[]> {
     return this.matches.find();
   }
 
-  async create(match: Match): Promise<Match> {
+  create(match: Match): Promise<Match> {
     return this.matches.save(match);
   }
 }

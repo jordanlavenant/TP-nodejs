@@ -1,30 +1,33 @@
-import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Post, Req, Res } from '@nestjs/common';
 import { Match } from 'src/entities/match.entity';
 import { MatchService } from './match.service';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { RankingUpdateEvent } from 'src/events/ranking.event';
+import { Request, Response } from 'express';
+import { Error } from 'src/types/type';
 
 @Controller('api')
 export class MatchController {  
-  constructor(private readonly appService: MatchService) {}
+  constructor(
+    private readonly appService: MatchService,
+    private readonly eventEmitter: EventEmitter2
+  ) {}
 
-  // TODO: delete this useless endpoint
-  @Get('matches')
-  @HttpCode(200)
-  async findAll(): Promise<Match[]> {
-    return this.appService.findAll();
-  }
-
+  // TODO: utiliser le Request
   @Post('match')
   @HttpCode(200)
-  async create(@Body() match: Match): Promise<Match> {
+  create(@Body() match: Match, @Req() req: Request, @Res() res: Response): Response<Match | Error> {
     if (!match.winner || !match.loser) {
-      throw new HttpException(
-        {
-          code: 0,
-          message: "Soit le gagnant, soit le perdant indiqué n'existe pas"
-        },
-        HttpStatus.UNPROCESSABLE_ENTITY
-      )
+      return res.status(422).send({
+        code: 0,
+        message: "Soit le gagnant, soit le perdant indiqué n'existe pas"
+      });
     }
-    return this.appService.create(match);
+    this.eventEmitter.emit(
+      'ranking.update',
+      new RankingUpdateEvent(match.winner, match.loser)
+    );
+    this.appService.create(match);
+    return res.status(200).send(match);
   }
 }

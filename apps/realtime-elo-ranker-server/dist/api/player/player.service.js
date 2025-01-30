@@ -21,22 +21,23 @@ let PlayerService = class PlayerService {
     constructor(players) {
         this.players = players;
     }
-    async findOne(id) {
+    findOne(id) {
         return this.players.findOne({ where: { id } });
     }
-    async findAll() {
+    findAll() {
         return this.players.find();
     }
-    async create(player) {
-        const players = await this.findAll();
-        if (players.length === 0) {
-            return this.players.save(player);
-        }
-        else {
-            const avgRank = players.reduce((acc, player) => acc + player.rank, 0) / players.length;
-            player.rank = avgRank;
-            return this.players.save(player);
-        }
+    create(player) {
+        return this.findAll().then((players) => {
+            if (players.length === 0) {
+                return this.players.save(player);
+            }
+            else {
+                const avgRank = players.reduce((acc, player) => acc + player.rank, 0) / players.length;
+                player.rank = avgRank;
+                return this.players.save(player);
+            }
+        });
     }
 };
 exports.PlayerService = PlayerService;

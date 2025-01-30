@@ -11,7 +11,7 @@ export class RankingService {
     private readonly players: Repository<Player>,
   ) {}
 
-  async findAll(): Promise<Player[]> {
+  findAll(): Promise<Player[]> {
     return this.players.find({
       order: {
         rank: 'DESC'

@@ -21,7 +21,7 @@ let RankingService = class RankingService {
     constructor(players) {
         this.players = players;
     }
-    async findAll() {
+    findAll() {
         return this.players.find({
             order: {
                 rank: 'DESC'

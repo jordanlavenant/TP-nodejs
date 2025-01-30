@@ -8,30 +8,25 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MatchService = void 0;
+exports.PlayerListener = void 0;
 const common_1 = require("@nestjs/common");
-const typeorm_1 = require("@nestjs/typeorm");
-const match_entity_1 = require("../../entities/match.entity");
-const typeorm_2 = require("typeorm");
-let MatchService = class MatchService {
-    constructor(matches) {
-        this.matches = matches;
-    }
-    findAll() {
-        return this.matches.find();
-    }
-    create(match) {
-        return this.matches.save(match);
+const event_emitter_1 = require("@nestjs/event-emitter");
+const player_event_1 = require("../events/player.event");
+let PlayerListener = class PlayerListener {
+    handleRankingUpdateEvent(payload) {
+        const { id, rank } = payload;
+        console.log(`Player created: ${id}, Rank: ${rank}`);
     }
 };
-exports.MatchService = MatchService;
-exports.MatchService = MatchService = __decorate([
-    (0, common_1.Injectable)(),
-    __param(0, (0, typeorm_1.InjectRepository)(match_entity_1.Match)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
-], MatchService);
-//# sourceMappingURL=match.service.js.map
+exports.PlayerListener = PlayerListener;
+__decorate([
+    (0, event_emitter_1.OnEvent)('player.create'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [player_event_1.PlayerCreatedEvent]),
+    __metadata("design:returntype", void 0)
+], PlayerListener.prototype, "handleRankingUpdateEvent", null);
+exports.PlayerListener = PlayerListener = __decorate([
+    (0, common_1.Injectable)()
+], PlayerListener);
+//# sourceMappingURL=player.listener.js.map
