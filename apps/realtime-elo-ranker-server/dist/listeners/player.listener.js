@@ -13,10 +13,12 @@ exports.PlayerListener = void 0;
 const common_1 = require("@nestjs/common");
 const event_emitter_1 = require("@nestjs/event-emitter");
 const player_event_1 = require("../events/player.event");
+const elo_1 = require("../mocks/elo");
 let PlayerListener = class PlayerListener {
-    handleRankingUpdateEvent(payload) {
+    handlePlayerUpdateEvent(payload) {
         const { id, rank } = payload;
         console.log(`Player created: ${id}, Rank: ${rank}`);
+        (0, elo_1.updateRank)({ winner: { id: 1, rank: 1000 }, loser: { id: 2, rank: 800 } });
     }
 };
 exports.PlayerListener = PlayerListener;
@@ -25,7 +27,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [player_event_1.PlayerCreatedEvent]),
     __metadata("design:returntype", void 0)
-], PlayerListener.prototype, "handleRankingUpdateEvent", null);
+], PlayerListener.prototype, "handlePlayerUpdateEvent", null);
 exports.PlayerListener = PlayerListener = __decorate([
     (0, common_1.Injectable)()
 ], PlayerListener);

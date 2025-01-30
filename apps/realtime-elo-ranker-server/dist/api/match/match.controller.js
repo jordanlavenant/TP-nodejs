@@ -23,16 +23,6 @@ let MatchController = class MatchController {
         this.appService = appService;
         this.eventEmitter = eventEmitter;
     }
-    async findAll(res) {
-        const matches = await this.appService.findAll();
-        if (matches.length === 0) {
-            return res.status(404).send({
-                code: 0,
-                message: "Aucun match n'a été joué",
-            });
-        }
-        return res.status(200).send(matches);
-    }
     create(createMatchDto, res) {
         if (!createMatchDto.winner || !createMatchDto.loser) {
             return res.status(422).send({
@@ -46,13 +36,6 @@ let MatchController = class MatchController {
     }
 };
 exports.MatchController = MatchController;
-__decorate([
-    (0, common_1.Get)('matches'),
-    __param(0, (0, common_1.Res)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], MatchController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Post)('match'),
     __param(0, (0, common_1.Body)()),

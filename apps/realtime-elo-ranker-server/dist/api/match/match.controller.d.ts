@@ -8,6 +8,5 @@ export declare class MatchController {
     private readonly appService;
     private readonly eventEmitter;
     constructor(appService: MatchService, eventEmitter: EventEmitter2);
-    findAll(res: Response): Promise<Response<Match[] | Error>>;
     create(createMatchDto: CreateMatchDto, res: Response): Response<Match | Error>;
 }

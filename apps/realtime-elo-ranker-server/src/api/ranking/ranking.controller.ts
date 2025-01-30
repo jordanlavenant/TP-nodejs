@@ -22,7 +22,7 @@ export class RankingController {
   }
 
   @Get('ranking/events')
-  async findAllEvents(): Promise<void> {
-    // TODO
+  findAllEvents(): void {
+    //
   }
 }

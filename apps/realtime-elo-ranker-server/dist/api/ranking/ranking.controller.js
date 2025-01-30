@@ -29,7 +29,7 @@ let RankingController = class RankingController {
         }
         return res.status(200).send(players);
     }
-    async findAllEvents() {
+    findAllEvents() {
     }
 };
 exports.RankingController = RankingController;
@@ -44,7 +44,7 @@ __decorate([
     (0, common_1.Get)('ranking/events'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
+    __metadata("design:returntype", void 0)
 ], RankingController.prototype, "findAllEvents", null);
 exports.RankingController = RankingController = __decorate([
     (0, common_1.Controller)('api'),

@@ -6,5 +6,5 @@ export declare class RankingController {
     private readonly appService;
     constructor(appService: RankingService);
     findAll(res: Response): Promise<Response<Player[] | Error>>;
-    findAllEvents(): Promise<void>;
+    findAllEvents(): void;
 }
