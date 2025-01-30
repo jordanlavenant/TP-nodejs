@@ -22,7 +22,11 @@ let RankingService = class RankingService {
         this.players = players;
     }
     async findAll() {
-        return this.players.find();
+        return this.players.find({
+            order: {
+                rank: 'DESC'
+            }
+        });
     }
 };
 exports.RankingService = RankingService;

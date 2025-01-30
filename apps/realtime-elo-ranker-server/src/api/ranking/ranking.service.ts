@@ -12,6 +12,10 @@ export class RankingService {
   ) {}
 
   async findAll(): Promise<Player[]> {
-    return this.players.find();
+    return this.players.find({
+      order: {
+        rank: 'DESC'
+      }
+    });
   }
 }

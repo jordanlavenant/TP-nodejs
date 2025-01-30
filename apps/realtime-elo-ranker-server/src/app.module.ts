@@ -10,7 +10,7 @@ import { RankingModule } from './api/ranking/ranking.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'sqlite',
-      database: 'db',
+      database: 'db.db',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),

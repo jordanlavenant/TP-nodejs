@@ -25,6 +25,6 @@ export class RankingController {
   @Get('ranking/events')
   @HttpCode(200)
   async findAllEvents(): Promise<void> {
-    console.log('findAllEvents');
+    // TODO
   }
 }

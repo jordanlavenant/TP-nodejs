@@ -20,6 +20,13 @@ export class PlayerService {
   }
 
   async create(player: Player): Promise<Player> {
-    return this.players.save(player);
+    const players = await this.findAll();
+    if (players.length === 0) {
+      return this.players.save(player);
+    } else {
+      const avgRank = players.reduce((acc, player) => acc + player.rank, 0) / players.length;
+      player.rank = avgRank;
+      return this.players.save(player);
+    }
   }
 }

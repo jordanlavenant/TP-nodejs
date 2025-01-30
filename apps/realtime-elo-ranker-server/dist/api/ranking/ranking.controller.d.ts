@@ -4,4 +4,5 @@ export declare class RankingController {
     private readonly appService;
     constructor(appService: RankingService);
     findAll(): Promise<Player[]>;
+    findAllEvents(): Promise<void>;
 }

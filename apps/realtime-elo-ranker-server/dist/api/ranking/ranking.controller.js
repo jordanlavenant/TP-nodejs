@@ -24,9 +24,9 @@ let RankingController = class RankingController {
                 message: "Le classement n'est pas disponible car aucun joueur n'existe"
             }, common_1.HttpStatus.NOT_FOUND);
         }
-        else {
-            return players;
-        }
+        return players;
+    }
+    async findAllEvents() {
     }
 };
 exports.RankingController = RankingController;
@@ -37,6 +37,13 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], RankingController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)('ranking/events'),
+    (0, common_1.HttpCode)(200),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], RankingController.prototype, "findAllEvents", null);
 exports.RankingController = RankingController = __decorate([
     (0, common_1.Controller)('api'),
     __metadata("design:paramtypes", [ranking_service_1.RankingService])
