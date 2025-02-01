@@ -50,11 +50,11 @@ let RankingController = class RankingController {
             };
             res.write(`data: ${JSON.stringify(event)}\n\n`);
         };
-        this.eventEmitter.on('ranking.update', listener);
+        this.eventEmitter.on('ranking.updated', (event) => console.log('an event was emitted:', event));
         this.eventEmitter.on('ranking.error', errorListener);
         res.on('close', () => {
             console.log('Connection closed');
-            this.eventEmitter.off('ranking.update', listener);
+            this.eventEmitter.off('ranking.updated', listener);
             this.eventEmitter.off('ranking.error', errorListener);
             res.end();
         });

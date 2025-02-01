@@ -37,13 +37,13 @@ export class MatchController {
     const loserPlayer: Player = new Player()
 
     this.eventEmitter.emit(
-      'ranking.update',
+      'ranking.updated',
       new RankingUpdateEvent(
         winnerPlayer,
       )
     );
     this.eventEmitter.emit(
-      'ranking.update',
+      'ranking.updated',
       new RankingUpdateEvent(
         loserPlayer,
       )

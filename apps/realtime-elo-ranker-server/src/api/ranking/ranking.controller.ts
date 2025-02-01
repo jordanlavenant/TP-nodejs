@@ -5,10 +5,8 @@ import { Response } from 'express';
 import { Error } from 'src/types/type';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { ResponsePlayerDto } from 'src/api/player/dto/response-player.dto';
-import { RankingEvent } from './events/ranking.event';
 import { RankingUpdateEvent } from './events/ranking-update.event';
 import { RankingErrorEvent } from './events/ranking-error.event';
-import { RankingEventType } from './types/RankingEvent';
 
 @Controller('api/ranking')
 export class RankingController {
@@ -29,7 +27,7 @@ export class RankingController {
     }
     return res.status(200).send(players) as Response<Player[]>;
   }
-  
+
   @Get('events')
   @Header('Content-Type', 'text/event-stream')
   @Header('Cache-Control', 'no-cache')
@@ -56,12 +54,12 @@ export class RankingController {
       res.write(`data: ${JSON.stringify(event)}\n\n`);
     }
 
-    this.eventEmitter.on('ranking.update', listener);
+    this.eventEmitter.on('ranking.updated', (event) => console.log('an event was emitted:', event));
     this.eventEmitter.on('ranking.error', errorListener);
 
     res.on('close', () => {
       console.log('Connection closed');
-      this.eventEmitter.off('ranking.update', listener);
+      this.eventEmitter.off('ranking.updated', listener);
       this.eventEmitter.off('ranking.error', errorListener);
       res.end();
     });

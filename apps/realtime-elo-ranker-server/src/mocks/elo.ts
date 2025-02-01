@@ -11,16 +11,23 @@ type UpdateRankProps = {
   };
 };
 
-// ? how to get this value?
-const WIN_PROBABILITY = 0.76;
+export const probability = (rating1: number, rating2: number) => {
+  const winrate =  1 / (1 + Math.pow(10, (rating2 - rating1) / 400));
+  const loserate = 1 - winrate;
+  return { winrate, loserate };
+};
 
 export const updateRank = (props: UpdateRankProps) => {
+  console.log('Old ranks:', props);
   const { winner, loser } = props;
+  
+  const { winrate, loserate } = probability(winner.rank, loser.rank);
+
   const newWinnerRank = Math.round(
-    winner.rank + PONDERATION * (1 - WIN_PROBABILITY),
+    winner.rank + PONDERATION * (1 - winrate),
   );
   const newLoserRank = Math.round(
-    loser.rank + PONDERATION * (0 - (1 - WIN_PROBABILITY)),
+    loser.rank + PONDERATION * (0 - (1 - loserate)),
   );
   const result = {
     winner: {

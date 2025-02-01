@@ -3,6 +3,7 @@ import { MatchService } from './match.service';
 import { MatchController } from './match.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Match } from 'src/entities/match.entity';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Match])],

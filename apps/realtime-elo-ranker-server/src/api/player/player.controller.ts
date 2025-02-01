@@ -30,7 +30,7 @@ export class PlayerController {
 
     const alreadyExist = await this.appService.playerExists(createPlayerDto.id);
 
-    if (alreadyExist) {
+    if (alreadyExist) { 
       return res.status(409).send({
         code: 0,
         message: 'Le joueur existe déjà',
@@ -40,7 +40,7 @@ export class PlayerController {
     await this.appService.create(createPlayerDto);
 
     this.eventEmitter.emit(
-      'ranking.update',
+      'ranking.updated',
       new RankingUpdateEvent(
         createPlayerDto
       ),

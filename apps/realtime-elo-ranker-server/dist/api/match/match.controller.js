@@ -35,8 +35,8 @@ let MatchController = class MatchController {
         void this.appService.create(createMatchDto);
         const winnerPlayer = new player_entity_1.Player();
         const loserPlayer = new player_entity_1.Player();
-        this.eventEmitter.emit('ranking.update', new ranking_update_event_1.RankingUpdateEvent(winnerPlayer));
-        this.eventEmitter.emit('ranking.update', new ranking_update_event_1.RankingUpdateEvent(loserPlayer));
+        this.eventEmitter.emit('ranking.updated', new ranking_update_event_1.RankingUpdateEvent(winnerPlayer));
+        this.eventEmitter.emit('ranking.updated', new ranking_update_event_1.RankingUpdateEvent(loserPlayer));
         return res.status(200).send(createMatchDto);
     }
 };

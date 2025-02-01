@@ -37,8 +37,9 @@ let PlayerController = class PlayerController {
                 message: 'Le joueur existe déjà',
             });
         }
-        this.eventEmitter.emit('ranking.update', new ranking_update_event_1.RankingUpdateEvent(createPlayerDto));
         await this.appService.create(createPlayerDto);
+        console.log('Emitting ranking.updated event with data:', createPlayerDto);
+        this.eventEmitter.emit('ranking.updated', new ranking_update_event_1.RankingUpdateEvent(createPlayerDto));
         return res.status(201).send(createPlayerDto);
     }
 };
