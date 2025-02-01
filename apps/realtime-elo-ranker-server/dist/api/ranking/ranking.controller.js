@@ -15,9 +15,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RankingController = void 0;
 const common_1 = require("@nestjs/common");
 const ranking_service_1 = require("./ranking.service");
+const event_emitter_1 = require("@nestjs/event-emitter");
 let RankingController = class RankingController {
-    constructor(appService) {
+    constructor(appService, eventEmitter) {
         this.appService = appService;
+        this.eventEmitter = eventEmitter;
     }
     async findAll(res) {
         const players = await this.appService.findAll();
@@ -29,7 +31,19 @@ let RankingController = class RankingController {
         }
         return res.status(200).send(players);
     }
-    findAllEvents() {
+    async subscribeToRankingUpdates(res) {
+        console.log('ranking/events');
+        res.setHeader('Content-Type', 'text/event-stream');
+        res.setHeader('Cache-Control', 'no-cache');
+        res.setHeader('Connection', 'keep-alive');
+        const onRankingUpdate = (data) => {
+            res.write(`data: ${JSON.stringify(data)}\n\n`);
+        };
+        this.eventEmitter.on('ranking.updated', onRankingUpdate);
+        res.on('close', () => {
+            this.eventEmitter.off('ranking.updated', onRankingUpdate);
+            res.end();
+        });
     }
 };
 exports.RankingController = RankingController;
@@ -42,12 +56,14 @@ __decorate([
 ], RankingController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)('ranking/events'),
+    __param(0, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
-], RankingController.prototype, "findAllEvents", null);
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], RankingController.prototype, "subscribeToRankingUpdates", null);
 exports.RankingController = RankingController = __decorate([
     (0, common_1.Controller)('api'),
-    __metadata("design:paramtypes", [ranking_service_1.RankingService])
+    __metadata("design:paramtypes", [ranking_service_1.RankingService,
+        event_emitter_1.EventEmitter2])
 ], RankingController);
 //# sourceMappingURL=ranking.controller.js.map

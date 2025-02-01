@@ -34,18 +34,13 @@ export class PlayerController {
         message: 'Le joueur existe déjà',
       }) as Response<Error>;
     }
-    this.eventEmitter.emit(
-      'player.create',
-      new PlayerCreatedEvent(createPlayerDto.id, createPlayerDto.rank),
-    );
     await this.appService.create(createPlayerDto);
-    return res.status(201).send(createPlayerDto) as Response<Player>;
-  }
-
-  @Sse('sse')
-  sse(): Observable<MessageEvent> {
-    return interval(1000).pipe(
-      map((_) => ({ data: { hello: 'world' } }) as MessageEvent),
+    this.eventEmitter.emit(
+      'player.created',
+      new PlayerCreatedEvent(
+        createPlayerDto.id, createPlayerDto.rank
+      ),
     );
+    return res.status(201).send(createPlayerDto) as Response<Player>;
   }
 }

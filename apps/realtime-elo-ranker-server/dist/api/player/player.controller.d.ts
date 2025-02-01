@@ -4,11 +4,9 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Response } from 'express';
 import { Error } from 'src/types/type';
 import { CreatePlayerDto } from './dto/create-player.dto';
-import { Observable } from 'rxjs';
 export declare class PlayerController {
     private readonly appService;
     private readonly eventEmitter;
     constructor(appService: PlayerService, eventEmitter: EventEmitter2);
     create(createPlayerDto: CreatePlayerDto, res: Response): Promise<Response<Player | Error>>;
-    sse(): Observable<MessageEvent>;
 }

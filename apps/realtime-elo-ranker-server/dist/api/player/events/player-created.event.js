@@ -8,4 +8,4 @@ class PlayerCreatedEvent {
     }
 }
 exports.PlayerCreatedEvent = PlayerCreatedEvent;
-//# sourceMappingURL=player.event.js.map
+//# sourceMappingURL=player-created.event.js.map

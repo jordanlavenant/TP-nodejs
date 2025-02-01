@@ -9,24 +9,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PlayerListener = void 0;
+exports.RankingUpdateListener = void 0;
 const common_1 = require("@nestjs/common");
 const event_emitter_1 = require("@nestjs/event-emitter");
-const player_event_1 = require("../events/player.event");
-let PlayerListener = class PlayerListener {
-    handlePlayerUpdateEvent(payload) {
-        const { id, rank } = payload;
-        console.log(`Player created: ${id}, Rank: ${rank}`);
+const ranking_service_1 = require("../ranking.service");
+const ranking_update_event_1 = require("../events/ranking-update.event");
+let RankingUpdateListener = class RankingUpdateListener {
+    constructor(rankingService) {
+        this.rankingService = rankingService;
+    }
+    handleRankingUpdated(event) {
+        this.rankingService.updateRanking(event);
     }
 };
-exports.PlayerListener = PlayerListener;
+exports.RankingUpdateListener = RankingUpdateListener;
 __decorate([
-    (0, event_emitter_1.OnEvent)('player.create'),
+    (0, event_emitter_1.OnEvent)('ranking.updated'),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [player_event_1.PlayerCreatedEvent]),
+    __metadata("design:paramtypes", [ranking_update_event_1.RankingUpdateEvent]),
     __metadata("design:returntype", void 0)
-], PlayerListener.prototype, "handlePlayerUpdateEvent", null);
-exports.PlayerListener = PlayerListener = __decorate([
-    (0, common_1.Injectable)()
-], PlayerListener);
-//# sourceMappingURL=player.listener.js.map
+], RankingUpdateListener.prototype, "handleRankingUpdated", null);
+exports.RankingUpdateListener = RankingUpdateListener = __decorate([
+    (0, common_1.Injectable)(),
+    __metadata("design:paramtypes", [ranking_service_1.RankingService])
+], RankingUpdateListener);
+//# sourceMappingURL=ranking-update.listener.js.map

@@ -12,7 +12,7 @@ const player_controller_1 = require("./player.controller");
 const player_service_1 = require("./player.service");
 const typeorm_1 = require("@nestjs/typeorm");
 const player_entity_1 = require("../../entities/player.entity");
-const player_listener_1 = require("../../listeners/player.listener");
+const player_created_listener_1 = require("./listener/player-created.listener");
 let PlayerModule = class PlayerModule {
 };
 exports.PlayerModule = PlayerModule;
@@ -20,7 +20,7 @@ exports.PlayerModule = PlayerModule = __decorate([
     (0, common_1.Module)({
         imports: [typeorm_1.TypeOrmModule.forFeature([player_entity_1.Player])],
         controllers: [player_controller_1.PlayerController],
-        providers: [player_service_1.PlayerService, player_listener_1.PlayerListener],
+        providers: [player_service_1.PlayerService, player_created_listener_1.PlayerCreatedListener],
         exports: [player_service_1.PlayerService],
     })
 ], PlayerModule);

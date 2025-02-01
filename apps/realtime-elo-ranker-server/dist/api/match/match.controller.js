@@ -15,13 +15,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MatchController = void 0;
 const common_1 = require("@nestjs/common");
 const match_service_1 = require("./match.service");
-const event_emitter_1 = require("@nestjs/event-emitter");
-const ranking_event_1 = require("../../events/ranking.event");
 const create_match_dto_1 = require("./dto/create-match.dto");
 let MatchController = class MatchController {
-    constructor(appService, eventEmitter) {
+    constructor(appService) {
         this.appService = appService;
-        this.eventEmitter = eventEmitter;
     }
     create(createMatchDto, res) {
         if (!createMatchDto.winner || !createMatchDto.loser) {
@@ -30,7 +27,6 @@ let MatchController = class MatchController {
                 message: "Soit le gagnant, soit le perdant indiqué n'existe pas",
             });
         }
-        this.eventEmitter.emit('ranking.update', new ranking_event_1.RankingUpdateEvent(createMatchDto.winner, createMatchDto.loser));
         void this.appService.create(createMatchDto);
         return res.status(200).send(createMatchDto);
     }
@@ -46,7 +42,6 @@ __decorate([
 ], MatchController.prototype, "create", null);
 exports.MatchController = MatchController = __decorate([
     (0, common_1.Controller)('api'),
-    __metadata("design:paramtypes", [match_service_1.MatchService,
-        event_emitter_1.EventEmitter2])
+    __metadata("design:paramtypes", [match_service_1.MatchService])
 ], MatchController);
 //# sourceMappingURL=match.controller.js.map

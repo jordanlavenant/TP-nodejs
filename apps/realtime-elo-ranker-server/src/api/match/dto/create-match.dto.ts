@@ -1,4 +1,4 @@
-import { IsBoolean, IsInt, IsNotEmpty, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateMatchDto {
   @IsNotEmpty()
@@ -6,7 +6,7 @@ export class CreateMatchDto {
   readonly winner: string;
 
   @IsNotEmpty()
-  @IsInt()
+  @IsString()
   readonly loser: string;
 
   @IsNotEmpty()

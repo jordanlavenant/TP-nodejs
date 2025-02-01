@@ -14,12 +14,14 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RankingService = void 0;
 const common_1 = require("@nestjs/common");
+const event_emitter_1 = require("@nestjs/event-emitter");
 const typeorm_1 = require("@nestjs/typeorm");
 const player_entity_1 = require("../../entities/player.entity");
 const typeorm_2 = require("typeorm");
 let RankingService = class RankingService {
-    constructor(players) {
+    constructor(players, eventEmitter) {
         this.players = players;
+        this.eventEmitter = eventEmitter;
     }
     findAll() {
         return this.players.find({
@@ -28,11 +30,15 @@ let RankingService = class RankingService {
             },
         });
     }
+    updateRanking(event) {
+        console.log(`update ranking with event: ${JSON.stringify(event)}`);
+    }
 };
 exports.RankingService = RankingService;
 exports.RankingService = RankingService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(player_entity_1.Player)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        event_emitter_1.EventEmitter2])
 ], RankingService);
 //# sourceMappingURL=ranking.service.js.map
