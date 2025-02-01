@@ -1,17 +1,14 @@
 import { Controller, Post, Body, Res } from '@nestjs/common';
 import { PlayerService } from './player.service';
 import { Player } from 'src/entities/player.entity';
-import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Response } from 'express';
 import { Error } from 'src/types/types';
 import { CreatePlayerDto } from './dto/create-player.dto';
-import { RankingUpdateEvent } from '../ranking/events/ranking-update.event';
 
 @Controller('api/player')
 export class PlayerController {
   constructor(
     private readonly appService: PlayerService,
-    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   // TODO: retirer la promesse (async await)
@@ -38,13 +35,6 @@ export class PlayerController {
     }
 
     await this.appService.create(createPlayerDto);
-
-    this.eventEmitter.emit(
-      'ranking.updated',
-      new RankingUpdateEvent(
-        createPlayerDto
-      ),
-    );
 
     return res.status(201).send(createPlayerDto) as Response<Player>;
   }

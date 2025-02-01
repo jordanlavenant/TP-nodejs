@@ -15,28 +15,33 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MatchController = void 0;
 const common_1 = require("@nestjs/common");
 const match_service_1 = require("./match.service");
-const event_emitter_1 = require("@nestjs/event-emitter");
 const create_match_dto_1 = require("./dto/create-match.dto");
-const player_entity_1 = require("../../entities/player.entity");
-const ranking_update_event_1 = require("../ranking/events/ranking-update.event");
+const player_service_1 = require("../player/player.service");
 let MatchController = class MatchController {
-    constructor(appService, eventEmitter) {
+    constructor(appService, playerService) {
         this.appService = appService;
-        this.eventEmitter = eventEmitter;
+        this.playerService = playerService;
     }
-    create(createMatchDto, res) {
+    async create(createMatchDto, res) {
         const { winner, loser, draw } = createMatchDto;
-        if (!winner || !loser) {
+        if (winner === loser) {
+            return res.status(422).send({
+                code: 0,
+                message: "Le gagnant et le perdant ne peuvent pas être la même personne",
+            });
+        }
+        const winnerExist = await this.playerService.playerExists(winner);
+        const loserExist = await this.playerService.playerExists(loser);
+        if (!winnerExist || !loserExist) {
             return res.status(422).send({
                 code: 0,
                 message: "Soit le gagnant, soit le perdant indiqué n'existe pas",
             });
         }
-        void this.appService.create(createMatchDto);
-        const winnerPlayer = new player_entity_1.Player();
-        const loserPlayer = new player_entity_1.Player();
-        this.eventEmitter.emit('ranking.updated', new ranking_update_event_1.RankingUpdateEvent(winnerPlayer));
-        this.eventEmitter.emit('ranking.updated', new ranking_update_event_1.RankingUpdateEvent(loserPlayer));
+        this.appService.create(createMatchDto)
+            .then(() => {
+            this.appService.updateElo(winner, loser, draw);
+        });
         return res.status(200).send(createMatchDto);
     }
 };
@@ -47,11 +52,11 @@ __decorate([
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_match_dto_1.CreateMatchDto, Object]),
-    __metadata("design:returntype", Object)
+    __metadata("design:returntype", Promise)
 ], MatchController.prototype, "create", null);
 exports.MatchController = MatchController = __decorate([
     (0, common_1.Controller)('api/match'),
     __metadata("design:paramtypes", [match_service_1.MatchService,
-        event_emitter_1.EventEmitter2])
+        player_service_1.PlayerService])
 ], MatchController);
 //# sourceMappingURL=match.controller.js.map

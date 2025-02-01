@@ -8,24 +8,20 @@ const probability = (rating1, rating2) => {
     return { winrate, loserate };
 };
 exports.probability = probability;
-const updateRank = (props) => {
-    console.log('Old ranks:', props);
-    const { winner, loser } = props;
+const updateRank = (winner, loser, draw) => {
     const { winrate, loserate } = (0, exports.probability)(winner.rank, loser.rank);
     const newWinnerRank = Math.round(winner.rank + elo_1.PONDERATION * (1 - winrate));
     const newLoserRank = Math.round(loser.rank + elo_1.PONDERATION * (0 - (1 - loserate)));
-    const result = {
-        winner: {
+    return {
+        winnerPlayer: {
             id: winner.id,
             rank: newWinnerRank,
         },
-        loser: {
+        loserPlayer: {
             id: loser.id,
             rank: newLoserRank,
         },
     };
-    console.log('New ranks:', result);
-    return result;
 };
 exports.updateRank = updateRank;
 //# sourceMappingURL=elo.js.map

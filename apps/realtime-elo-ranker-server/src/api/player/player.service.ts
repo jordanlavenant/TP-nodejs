@@ -2,12 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { Player } from 'src/entities/player.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { RankingUpdateEvent } from '../ranking/events/ranking-update.event';
 
 @Injectable()
 export class PlayerService {
   constructor(
     @InjectRepository(Player)
     private readonly players: Repository<Player>,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   findOne(id: string): Promise<Player | null> {
@@ -31,6 +34,13 @@ export class PlayerService {
           players.reduce((acc, player) => acc + player.rank, 0) /
           players.length;
         player.rank = avgRank;
+
+        this.eventEmitter.emit(
+          'ranking.updated',
+          new RankingUpdateEvent(
+            player
+          ),
+        );
         return this.players.save(player);
       }
     });

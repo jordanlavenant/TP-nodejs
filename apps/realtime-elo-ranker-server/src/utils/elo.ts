@@ -1,4 +1,5 @@
-import { PONDERATION } from 'src/constants/elo';
+import { PONDERATION } from "src/constants/elo";
+import { Player } from "src/entities/player.entity";
 
 type UpdateRankProps = {
   winner: {
@@ -17,9 +18,7 @@ export const probability = (rating1: number, rating2: number) => {
   return { winrate, loserate };
 };
 
-export const updateRank = (props: UpdateRankProps) => {
-  console.log('Old ranks:', props);
-  const { winner, loser } = props;
+export const updateRank = (winner: Player, loser: Player, draw: boolean) => {
   
   const { winrate, loserate } = probability(winner.rank, loser.rank);
 
@@ -29,16 +28,15 @@ export const updateRank = (props: UpdateRankProps) => {
   const newLoserRank = Math.round(
     loser.rank + PONDERATION * (0 - (1 - loserate)),
   );
-  const result = {
-    winner: {
+  
+  return {
+    winnerPlayer: {
       id: winner.id,
       rank: newWinnerRank,
     },
-    loser: {
+    loserPlayer: {
       id: loser.id,
       rank: newLoserRank,
     },
-  };
-  console.log('New ranks:', result);
-  return result;
+  }
 };

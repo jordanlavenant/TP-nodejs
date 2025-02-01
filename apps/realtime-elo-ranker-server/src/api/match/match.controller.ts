@@ -1,53 +1,49 @@
 import { Body, Controller, Post, Res } from '@nestjs/common';
-import { Match } from 'src/entities/match.entity';
+import { Match } from '@entities/match.entity';
 import { MatchService } from './match.service';
-import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Response } from 'express';
 import { Error } from 'src/types/types';
 import { CreateMatchDto } from './dto/create-match.dto';
-import { Player } from 'src/entities/player.entity';
-import { RankingUpdateEvent } from '../ranking/events/ranking-update.event';
+import { PlayerService } from '@player/player.service';
 
 @Controller('api/match')
 export class MatchController {
   constructor(
     private readonly appService: MatchService,
-    private readonly eventEmitter: EventEmitter2
+    private readonly playerService: PlayerService
   ) {}
 
   @Post()
-  create(
+  async create(
     @Body() createMatchDto: CreateMatchDto,
     @Res() res: Response,
-  ): Response<Match | Error> {
+  ): Promise<Response<Match | Error>> {
 
     const { winner, loser, draw } = createMatchDto
 
-    if (!winner || !loser) {
+    // Check if winner and loser are the same
+    if (winner === loser) {
+      return res.status(422).send({
+        code: 0,
+        message: "Le gagnant et le perdant ne peuvent pas être la même personne",
+      }) as Response<Error>;
+    }
+
+    // Check if winner and loser exist
+    const winnerExist = await this.playerService.playerExists(winner);
+    const loserExist = await this.playerService.playerExists(loser);
+
+    if (!winnerExist || !loserExist) {
       return res.status(422).send({
         code: 0,
         message: "Soit le gagnant, soit le perdant indiqué n'existe pas",
       }) as Response<Error>;
     }
 
-    void this.appService.create(createMatchDto);
-
-    // ! temp
-    const winnerPlayer: Player = new Player()
-    const loserPlayer: Player = new Player()
-
-    this.eventEmitter.emit(
-      'ranking.updated',
-      new RankingUpdateEvent(
-        winnerPlayer,
-      )
-    );
-    this.eventEmitter.emit(
-      'ranking.updated',
-      new RankingUpdateEvent(
-        loserPlayer,
-      )
-    );
+    this.appService.create(createMatchDto)
+    .then(() => {
+      this.appService.updateElo(winner, loser, draw);
+    });
 
     return res.status(200).send(createMatchDto) as Response<Match>;
   }

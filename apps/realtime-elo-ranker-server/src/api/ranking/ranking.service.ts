@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Player } from 'src/entities/player.entity';
-import { EventEmitter } from 'stream';
+import { Player } from '@entities/player.entity';
 import { Repository } from 'typeorm';
-import { RankingUpdateEvent } from './events/ranking-update.event';
 
 @Injectable()
 export class RankingService {
@@ -20,9 +18,5 @@ export class RankingService {
         rank: 'DESC',
       },
     });
-  }
-
-  updateRanking(event: RankingUpdateEvent): void {
-    console.log(`update ranking with event: ${JSON.stringify(event)}`)
   }
 }

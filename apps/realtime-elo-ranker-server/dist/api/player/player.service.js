@@ -17,9 +17,12 @@ const common_1 = require("@nestjs/common");
 const player_entity_1 = require("../../entities/player.entity");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
+const event_emitter_1 = require("@nestjs/event-emitter");
+const ranking_update_event_1 = require("../ranking/events/ranking-update.event");
 let PlayerService = class PlayerService {
-    constructor(players) {
+    constructor(players, eventEmitter) {
         this.players = players;
+        this.eventEmitter = eventEmitter;
     }
     findOne(id) {
         return this.players.findOne({ where: { id } });
@@ -39,6 +42,7 @@ let PlayerService = class PlayerService {
                 const avgRank = players.reduce((acc, player) => acc + player.rank, 0) /
                     players.length;
                 player.rank = avgRank;
+                this.eventEmitter.emit('ranking.updated', new ranking_update_event_1.RankingUpdateEvent(player));
                 return this.players.save(player);
             }
         });
@@ -48,6 +52,7 @@ exports.PlayerService = PlayerService;
 exports.PlayerService = PlayerService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(player_entity_1.Player)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        event_emitter_1.EventEmitter2])
 ], PlayerService);
 //# sourceMappingURL=player.service.js.map

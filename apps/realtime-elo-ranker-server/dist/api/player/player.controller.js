@@ -15,13 +15,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PlayerController = void 0;
 const common_1 = require("@nestjs/common");
 const player_service_1 = require("./player.service");
-const event_emitter_1 = require("@nestjs/event-emitter");
 const create_player_dto_1 = require("./dto/create-player.dto");
-const ranking_update_event_1 = require("../ranking/events/ranking-update.event");
 let PlayerController = class PlayerController {
-    constructor(appService, eventEmitter) {
+    constructor(appService) {
         this.appService = appService;
-        this.eventEmitter = eventEmitter;
     }
     async create(createPlayerDto, res) {
         if (!createPlayerDto.id) {
@@ -38,7 +35,6 @@ let PlayerController = class PlayerController {
             });
         }
         await this.appService.create(createPlayerDto);
-        this.eventEmitter.emit('ranking.updated', new ranking_update_event_1.RankingUpdateEvent(createPlayerDto));
         return res.status(201).send(createPlayerDto);
     }
 };
@@ -53,7 +49,6 @@ __decorate([
 ], PlayerController.prototype, "create", null);
 exports.PlayerController = PlayerController = __decorate([
     (0, common_1.Controller)('api/player'),
-    __metadata("design:paramtypes", [player_service_1.PlayerService,
-        event_emitter_1.EventEmitter2])
+    __metadata("design:paramtypes", [player_service_1.PlayerService])
 ], PlayerController);
 //# sourceMappingURL=player.controller.js.map

@@ -30,9 +30,6 @@ let RankingService = class RankingService {
             },
         });
     }
-    updateRanking(event) {
-        console.log(`update ranking with event: ${JSON.stringify(event)}`);
-    }
 };
 exports.RankingService = RankingService;
 exports.RankingService = RankingService = __decorate([
