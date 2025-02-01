@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Match } from '@entities/match.entity';
-import { Player } from '@entities/player.entity';
+import { Match } from 'src/entities/match.entity';
+import { Player } from 'src/entities/player.entity';
 import { Repository } from 'typeorm';
-import { RankingUpdateEvent } from '@ranking/events/ranking-update.event';
-import { updateRank } from '@utils/elo';
+import { RankingUpdateEvent } from 'src/api/ranking/events/ranking-update.event';
+import { updateRank } from 'src/utils/elo';
 
 @Injectable()
 export class MatchService {

@@ -2,9 +2,9 @@ import { Module } from '@nestjs/common';
 import { MatchService } from './match.service';
 import { MatchController } from './match.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Match } from '@entities/match.entity';
-import { Player } from '@entities/player.entity';
-import { PlayerService } from '@player/player.service';
+import { Match } from 'src/entities/match.entity';
+import { Player } from 'src/entities/player.entity';
+import { PlayerService } from 'src/api/player/player.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Match, Player])],

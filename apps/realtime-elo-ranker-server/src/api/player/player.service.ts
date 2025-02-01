@@ -3,7 +3,7 @@ import { Player } from 'src/entities/player.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { RankingUpdateEvent } from '../ranking/events/ranking-update.event';
+import { RankingUpdateEvent } from 'src/api/ranking/events/ranking-update.event';
 
 @Injectable()
 export class PlayerService {

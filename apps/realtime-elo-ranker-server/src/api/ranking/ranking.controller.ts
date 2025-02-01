@@ -1,10 +1,10 @@
 import { Controller, Get, Header, Res } from '@nestjs/common';
 import { RankingService } from './ranking.service';
-import { Player } from '@entities/player.entity';
+import { Player } from 'src/entities/player.entity';
 import { Response } from 'express';
 import { Error } from 'src/types/types';
 import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
-import { ResponsePlayerDto } from '@player/dto/response-player.dto';
+import { ResponsePlayerDto } from 'src/api/player/dto/response-player.dto';
 import { RankingUpdateEvent } from './events/ranking-update.event';
 import { RankingErrorEvent } from './events/ranking-error.event';
 
