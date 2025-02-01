@@ -38,7 +38,6 @@ let PlayerController = class PlayerController {
             });
         }
         await this.appService.create(createPlayerDto);
-        console.log('Emitting ranking.updated event with data:', createPlayerDto);
         this.eventEmitter.emit('ranking.updated', new ranking_update_event_1.RankingUpdateEvent(createPlayerDto));
         return res.status(201).send(createPlayerDto);
     }

@@ -1,7 +1,7 @@
 import { RankingService } from './ranking.service';
 import { Player } from 'src/entities/player.entity';
 import { Response } from 'express';
-import { Error } from 'src/types/type';
+import { Error } from 'src/types/types';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 export declare class RankingController {
     private readonly appService;

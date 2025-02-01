@@ -3,7 +3,7 @@ import { PlayerService } from './player.service';
 import { Player } from 'src/entities/player.entity';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Response } from 'express';
-import { Error } from 'src/types/type';
+import { Error } from 'src/types/types';
 import { CreatePlayerDto } from './dto/create-player.dto';
 import { RankingUpdateEvent } from '../ranking/events/ranking-update.event';
 

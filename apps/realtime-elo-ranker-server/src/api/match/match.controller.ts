@@ -3,7 +3,7 @@ import { Match } from 'src/entities/match.entity';
 import { MatchService } from './match.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Response } from 'express';
-import { Error } from 'src/types/type';
+import { Error } from 'src/types/types';
 import { CreateMatchDto } from './dto/create-match.dto';
 import { Player } from 'src/entities/player.entity';
 import { RankingUpdateEvent } from '../ranking/events/ranking-update.event';
