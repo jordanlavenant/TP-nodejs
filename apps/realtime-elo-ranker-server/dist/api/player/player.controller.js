@@ -16,8 +16,8 @@ exports.PlayerController = void 0;
 const common_1 = require("@nestjs/common");
 const player_service_1 = require("./player.service");
 const event_emitter_1 = require("@nestjs/event-emitter");
-const player_created_event_1 = require("./events/player-created.event");
 const create_player_dto_1 = require("./dto/create-player.dto");
+const ranking_update_event_1 = require("../ranking/events/ranking-update.event");
 let PlayerController = class PlayerController {
     constructor(appService, eventEmitter) {
         this.appService = appService;
@@ -37,14 +37,14 @@ let PlayerController = class PlayerController {
                 message: 'Le joueur existe déjà',
             });
         }
+        this.eventEmitter.emit('ranking.update', new ranking_update_event_1.RankingUpdateEvent(createPlayerDto));
         await this.appService.create(createPlayerDto);
-        this.eventEmitter.emit('player.created', new player_created_event_1.PlayerCreatedEvent(createPlayerDto.id, createPlayerDto.rank));
         return res.status(201).send(createPlayerDto);
     }
 };
 exports.PlayerController = PlayerController;
 __decorate([
-    (0, common_1.Post)('player'),
+    (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
@@ -52,7 +52,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], PlayerController.prototype, "create", null);
 exports.PlayerController = PlayerController = __decorate([
-    (0, common_1.Controller)('api'),
+    (0, common_1.Controller)('api/player'),
     __metadata("design:paramtypes", [player_service_1.PlayerService,
         event_emitter_1.EventEmitter2])
 ], PlayerController);

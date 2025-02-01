@@ -8,5 +8,5 @@ export declare class RankingController {
     private eventEmitter;
     constructor(appService: RankingService, eventEmitter: EventEmitter2);
     findAll(res: Response): Promise<Response<Player[] | Error>>;
-    subscribeToRankingUpdates(res: Response): Promise<void>;
+    getEvents(res: Response): void;
 }

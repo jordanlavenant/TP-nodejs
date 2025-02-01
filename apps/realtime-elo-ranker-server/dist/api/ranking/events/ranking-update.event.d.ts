@@ -1,6 +1,6 @@
 import { Player } from "src/entities/player.entity";
-export declare class RankingUpdateEvent {
-    readonly type: string;
+import { RankingEvent } from "./ranking.event";
+export declare class RankingUpdateEvent extends RankingEvent {
     readonly player: Player;
-    constructor(type: string, player: Player);
+    constructor(player: Player);
 }

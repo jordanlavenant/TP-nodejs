@@ -1,8 +1,10 @@
 import { Player } from "src/entities/player.entity";
+import { RankingEvent } from "./ranking.event";
 
-export class RankingUpdateEvent {
+export class RankingUpdateEvent extends RankingEvent {
   constructor(
-    public readonly type: string,
     public readonly player: Player,
-  ) {}
+  ) {
+    super('RankingUpdate');
+  }
 }

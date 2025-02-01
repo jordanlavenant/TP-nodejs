@@ -1,9 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RankingUpdateEvent = void 0;
-class RankingUpdateEvent {
-    constructor(type, player) {
-        this.type = type;
+const ranking_event_1 = require("./ranking.event");
+class RankingUpdateEvent extends ranking_event_1.RankingEvent {
+    constructor(player) {
+        super('RankingUpdate');
         this.player = player;
     }
 }

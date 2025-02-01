@@ -31,38 +31,55 @@ let RankingController = class RankingController {
         }
         return res.status(200).send(players);
     }
-    async subscribeToRankingUpdates(res) {
-        console.log('ranking/events');
-        res.setHeader('Content-Type', 'text/event-stream');
-        res.setHeader('Cache-Control', 'no-cache');
-        res.setHeader('Connection', 'keep-alive');
-        const onRankingUpdate = (data) => {
-            res.write(`data: ${JSON.stringify(data)}\n\n`);
+    getEvents(res) {
+        console.log('Connection opened');
+        const listener = (player) => {
+            console.log('Ranking update event received:', player);
+            const event = {
+                type: 'RankingUpdate',
+                player,
+            };
+            res.write(`data: ${JSON.stringify(event)}\n\n`);
         };
-        this.eventEmitter.on('ranking.updated', onRankingUpdate);
+        const errorListener = () => {
+            console.log('Ranking error event received');
+            const event = {
+                type: 'Error',
+                code: 1,
+                message: 'Erreur lors de la récupération des données'
+            };
+            res.write(`data: ${JSON.stringify(event)}\n\n`);
+        };
+        this.eventEmitter.on('ranking.update', listener);
+        this.eventEmitter.on('ranking.error', errorListener);
         res.on('close', () => {
-            this.eventEmitter.off('ranking.updated', onRankingUpdate);
+            console.log('Connection closed');
+            this.eventEmitter.off('ranking.update', listener);
+            this.eventEmitter.off('ranking.error', errorListener);
             res.end();
         });
     }
 };
 exports.RankingController = RankingController;
 __decorate([
-    (0, common_1.Get)('ranking'),
+    (0, common_1.Get)(),
     __param(0, (0, common_1.Res)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], RankingController.prototype, "findAll", null);
 __decorate([
-    (0, common_1.Get)('ranking/events'),
+    (0, common_1.Get)('events'),
+    (0, common_1.Header)('Content-Type', 'text/event-stream'),
+    (0, common_1.Header)('Cache-Control', 'no-cache'),
+    (0, common_1.Header)('Connection', 'keep-alive'),
     __param(0, (0, common_1.Res)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], RankingController.prototype, "subscribeToRankingUpdates", null);
+    __metadata("design:returntype", void 0)
+], RankingController.prototype, "getEvents", null);
 exports.RankingController = RankingController = __decorate([
-    (0, common_1.Controller)('api'),
+    (0, common_1.Controller)('api/ranking'),
     __metadata("design:paramtypes", [ranking_service_1.RankingService,
         event_emitter_1.EventEmitter2])
 ], RankingController);

@@ -1,11 +1,16 @@
-import { Controller, Get, Res } from '@nestjs/common';
+import { Controller, Get, Header, Res } from '@nestjs/common';
 import { RankingService } from './ranking.service';
 import { Player } from 'src/entities/player.entity';
 import { Response } from 'express';
 import { Error } from 'src/types/type';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { ResponsePlayerDto } from 'src/api/player/dto/response-player.dto';
+import { RankingEvent } from './events/ranking.event';
+import { RankingUpdateEvent } from './events/ranking-update.event';
+import { RankingErrorEvent } from './events/ranking-error.event';
+import { RankingEventType } from './types/RankingEvent';
 
-@Controller('api')
+@Controller('api/ranking')
 export class RankingController {
   constructor(
     private readonly appService: RankingService,
@@ -13,7 +18,7 @@ export class RankingController {
   ) {}
 
   // TODO: retirer la promesse (async await)
-  @Get('ranking')
+  @Get()
   async findAll(@Res() res: Response): Promise<Response<Player[] | Error>> {
     const players = await this.appService.findAll();
     if (players.length === 0) {
@@ -25,21 +30,39 @@ export class RankingController {
     return res.status(200).send(players) as Response<Player[]>;
   }
   
-  @Get('ranking/events')
-  async subscribeToRankingUpdates(@Res() res: Response) {
-    console.log('ranking/events')
-    res.setHeader('Content-Type', 'text/event-stream');
-    res.setHeader('Cache-Control', 'no-cache');
-    res.setHeader('Connection', 'keep-alive');
+  @Get('events')
+  @Header('Content-Type', 'text/event-stream')
+  @Header('Cache-Control', 'no-cache')
+  @Header('Connection', 'keep-alive')
+  getEvents(@Res() res: Response) {
+    console.log('Connection opened');
 
-    const onRankingUpdate = (data: any) => { // ! temp
-      res.write(`data: ${JSON.stringify(data)}\n\n`);
-    };
+    const listener = (player: ResponsePlayerDto) => {
+      console.log('Ranking update event received:', player);
+      const event: RankingUpdateEvent = {
+        type: 'RankingUpdate',
+        player,
+      }
+      res.write(`data: ${JSON.stringify(event)}\n\n`);
+    }
 
-    this.eventEmitter.on('ranking.updated', onRankingUpdate);
+    const errorListener = () => {
+      console.log('Ranking error event received');
+      const event: RankingErrorEvent = {
+        type: 'Error',
+        code: 1,
+        message: 'Erreur lors de la récupération des données'
+      }
+      res.write(`data: ${JSON.stringify(event)}\n\n`);
+    }
+
+    this.eventEmitter.on('ranking.update', listener);
+    this.eventEmitter.on('ranking.error', errorListener);
 
     res.on('close', () => {
-      this.eventEmitter.off('ranking.updated', onRankingUpdate);
+      console.log('Connection closed');
+      this.eventEmitter.off('ranking.update', listener);
+      this.eventEmitter.off('ranking.error', errorListener);
       res.end();
     });
   }
