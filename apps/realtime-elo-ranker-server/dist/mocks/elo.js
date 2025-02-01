@@ -7,7 +7,7 @@ const updateRank = (props) => {
     const { winner, loser } = props;
     const newWinnerRank = Math.round(winner.rank + elo_1.PONDERATION * (1 - WIN_PROBABILITY));
     const newLoserRank = Math.round(loser.rank + elo_1.PONDERATION * (0 - (1 - WIN_PROBABILITY)));
-    console.log({
+    const result = {
         winner: {
             id: winner.id,
             rank: newWinnerRank,
@@ -16,7 +16,9 @@ const updateRank = (props) => {
             id: loser.id,
             rank: newLoserRank,
         },
-    });
+    };
+    console.log('New ranks:', result);
+    return result;
 };
 exports.updateRank = updateRank;
 //# sourceMappingURL=elo.js.map

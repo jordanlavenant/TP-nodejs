@@ -3,7 +3,7 @@ import { PlayerController } from './player.controller';
 import { PlayerService } from './player.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Player } from 'src/entities/player.entity';
-import { PlayerListener } from 'src/listeners/player.listener';
+import { PlayerListener } from 'src/api/player/listener/player-created.listener';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Player])],

@@ -1,11 +1,12 @@
-import { Controller, Post, Body, Res } from '@nestjs/common';
+import { Controller, Post, Body, Res, Sse } from '@nestjs/common';
 import { PlayerService } from './player.service';
 import { Player } from 'src/entities/player.entity';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { PlayerCreatedEvent } from 'src/events/player.event';
+import { PlayerCreatedEvent } from 'src/api/player/events/player-created.event';
 import { Response } from 'express';
 import { Error } from 'src/types/type';
 import { CreatePlayerDto } from './dto/create-player.dto';
+import { interval, map, Observable } from 'rxjs';
 
 @Controller('api')
 export class PlayerController {
@@ -39,5 +40,12 @@ export class PlayerController {
     );
     await this.appService.create(createPlayerDto);
     return res.status(201).send(createPlayerDto) as Response<Player>;
+  }
+
+  @Sse('sse')
+  sse(): Observable<MessageEvent> {
+    return interval(1000).pipe(
+      map((_) => ({ data: { hello: 'world' } }) as MessageEvent),
+    );
   }
 }

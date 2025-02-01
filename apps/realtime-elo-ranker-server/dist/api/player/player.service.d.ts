@@ -1,4 +1,4 @@
-import { Player } from '../../entities/player.entity';
+import { Player } from 'src/entities/player.entity';
 import { Repository } from 'typeorm';
 export declare class PlayerService {
     private readonly players;

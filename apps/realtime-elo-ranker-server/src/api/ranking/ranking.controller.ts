@@ -23,6 +23,6 @@ export class RankingController {
 
   @Get('ranking/events')
   findAllEvents(): void {
-    //
+    // TODO
   }
 }

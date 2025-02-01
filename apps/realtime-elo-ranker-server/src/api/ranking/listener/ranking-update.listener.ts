@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
-import { RankingUpdateEvent } from 'src/events/ranking.event';
+import { RankingUpdateEvent } from 'src/api/ranking/events/ranking-update.event';
 
 @Injectable()
-export class RankingListener {
+export class RankingUpdateListener {
   @OnEvent('ranking.update')
   handleRankingUpdateEvent(payload: RankingUpdateEvent) {
     const { winnerId, loserId } = payload;

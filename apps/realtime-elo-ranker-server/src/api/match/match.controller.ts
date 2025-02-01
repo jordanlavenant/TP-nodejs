@@ -2,7 +2,7 @@ import { Body, Controller, Post, Res } from '@nestjs/common';
 import { Match } from 'src/entities/match.entity';
 import { MatchService } from './match.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { RankingUpdateEvent } from 'src/events/ranking.event';
+import { RankingUpdateEvent } from 'src/api/ranking/events/ranking-update.event';
 import { Response } from 'express';
 import { Error } from 'src/types/type';
 import { CreateMatchDto } from './dto/create-match.dto';

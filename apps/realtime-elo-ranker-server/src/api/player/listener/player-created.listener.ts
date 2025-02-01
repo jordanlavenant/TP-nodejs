@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
-import { PlayerCreatedEvent } from 'src/events/player.event';
+import { PlayerCreatedEvent } from 'src/api/player/events/player-created.event';
+
 @Injectable()
-export class PlayerListener {
+export class PlayerCreatedListener {
   @OnEvent('player.create')
-  handlePlayerUpdateEvent(payload: PlayerCreatedEvent) {
+  handlePlayerCreatedEvent(payload: PlayerCreatedEvent) {
     const { id, rank } = payload;
     console.log(`Player created: ${id}, Rank: ${rank}`);
   }

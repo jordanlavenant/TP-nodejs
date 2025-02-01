@@ -18,6 +18,7 @@ const player_service_1 = require("./player.service");
 const event_emitter_1 = require("@nestjs/event-emitter");
 const player_event_1 = require("../../events/player.event");
 const create_player_dto_1 = require("./dto/create-player.dto");
+const rxjs_1 = require("rxjs");
 let PlayerController = class PlayerController {
     constructor(appService, eventEmitter) {
         this.appService = appService;
@@ -41,6 +42,9 @@ let PlayerController = class PlayerController {
         await this.appService.create(createPlayerDto);
         return res.status(201).send(createPlayerDto);
     }
+    sse() {
+        return (0, rxjs_1.interval)(1000).pipe((0, rxjs_1.map)((_) => ({ data: { hello: 'world' } })));
+    }
 };
 exports.PlayerController = PlayerController;
 __decorate([
@@ -51,6 +55,12 @@ __decorate([
     __metadata("design:paramtypes", [create_player_dto_1.CreatePlayerDto, Object]),
     __metadata("design:returntype", Promise)
 ], PlayerController.prototype, "create", null);
+__decorate([
+    (0, common_1.Sse)('sse'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", rxjs_1.Observable)
+], PlayerController.prototype, "sse", null);
 exports.PlayerController = PlayerController = __decorate([
     (0, common_1.Controller)('api'),
     __metadata("design:paramtypes", [player_service_1.PlayerService,

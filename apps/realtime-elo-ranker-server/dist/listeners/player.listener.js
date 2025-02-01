@@ -13,12 +13,10 @@ exports.PlayerListener = void 0;
 const common_1 = require("@nestjs/common");
 const event_emitter_1 = require("@nestjs/event-emitter");
 const player_event_1 = require("../events/player.event");
-const elo_1 = require("../mocks/elo");
 let PlayerListener = class PlayerListener {
     handlePlayerUpdateEvent(payload) {
         const { id, rank } = payload;
         console.log(`Player created: ${id}, Rank: ${rank}`);
-        (0, elo_1.updateRank)({ winner: { id: 1, rank: 1000 }, loser: { id: 2, rank: 800 } });
     }
 };
 exports.PlayerListener = PlayerListener;
