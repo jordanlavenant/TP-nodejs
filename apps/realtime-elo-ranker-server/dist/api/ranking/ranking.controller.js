@@ -38,7 +38,7 @@ let RankingController = class RankingController {
             console.log('Ranking update event received:', player);
             const event = {
                 type: 'RankingUpdate',
-                player,
+                player: player,
             };
             res.write(`data: ${JSON.stringify(event)}\n\n`);
         };
@@ -47,7 +47,7 @@ let RankingController = class RankingController {
             const event = {
                 type: 'Error',
                 code: 1,
-                message: 'Erreur lors de la récupération des données'
+                message: 'Erreur lors de la récupération des données',
             };
             res.write(`data: ${JSON.stringify(event)}\n\n`);
         };

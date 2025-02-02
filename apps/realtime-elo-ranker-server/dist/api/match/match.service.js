@@ -30,9 +30,6 @@ let MatchService = class MatchService {
     findAll() {
         return this.matches.find();
     }
-    findOnePlayer(id) {
-        return this.players.findOne({ where: { id } });
-    }
     create(match) {
         return this.matches.save(match);
     }
@@ -42,6 +39,8 @@ let MatchService = class MatchService {
         if (!winnerDB || !loserDB)
             return;
         const { winnerPlayer, loserPlayer } = (0, elo_1.updateRank)(winnerDB, loserDB, draw);
+        await this.players.save(winnerPlayer);
+        await this.players.save(loserPlayer);
         this.eventEmitter.emit('ranking.updated', new ranking_update_event_1.RankingUpdateEvent(winnerPlayer));
         this.eventEmitter.emit('ranking.updated', new ranking_update_event_1.RankingUpdateEvent(loserPlayer));
     }

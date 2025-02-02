@@ -4,6 +4,6 @@ export type Error = {
 };
 
 export enum RankingEventType {
-  RankingUpdate = "RankingUpdate",
-  Error = "Error"
+  RankingUpdate = 'RankingUpdate',
+  Error = 'Error',
 }

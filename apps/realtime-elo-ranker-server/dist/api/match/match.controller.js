@@ -27,7 +27,7 @@ let MatchController = class MatchController {
         if (winner === loser) {
             return res.status(422).send({
                 code: 0,
-                message: "Le gagnant et le perdant ne peuvent pas être la même personne",
+                message: 'Le gagnant et le perdant ne peuvent pas être la même personne',
             });
         }
         const winnerExist = await this.playerService.playerExists(winner);
@@ -38,9 +38,8 @@ let MatchController = class MatchController {
                 message: "Soit le gagnant, soit le perdant indiqué n'existe pas",
             });
         }
-        this.appService.create(createMatchDto)
-            .then(() => {
-            this.appService.updateElo(winner, loser, draw);
+        void this.appService.create(createMatchDto).then(() => {
+            void this.appService.updateElo(winner, loser, draw);
         });
         return res.status(200).send(createMatchDto);
     }

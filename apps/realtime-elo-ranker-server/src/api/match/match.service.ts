@@ -23,10 +23,6 @@ export class MatchService {
     return this.matches.find();
   }
 
-  findOnePlayer(id: string): Promise<Player | null> {
-    return this.players.findOne({ where: { id } });
-  }
-
   create(match: Match): Promise<Match> {
     return this.matches.save(match);
   }
@@ -38,6 +34,9 @@ export class MatchService {
     if (!winnerDB || !loserDB) return;
 
     const { winnerPlayer, loserPlayer } = updateRank(winnerDB, loserDB, draw);
+
+    await this.players.save(winnerPlayer);
+    await this.players.save(loserPlayer);
 
     this.eventEmitter.emit(
       'ranking.updated',

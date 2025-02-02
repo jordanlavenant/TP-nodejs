@@ -28,6 +28,10 @@ export class PlayerService {
   create(player: Player): Promise<Player> {
     return this.findAll().then((players) => {
       if (players.length === 0) {
+        this.eventEmitter.emit(
+          'ranking.updated',
+          new RankingUpdateEvent(player),
+        );
         return this.players.save(player);
       } else {
         const avgRank =

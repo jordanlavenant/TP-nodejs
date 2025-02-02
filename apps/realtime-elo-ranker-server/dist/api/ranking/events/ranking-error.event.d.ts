@@ -1,4 +1,4 @@
-import { RankingEvent } from "./ranking.event";
+import { RankingEvent } from './ranking.event';
 export declare class RankingErrorEvent extends RankingEvent {
     readonly code: number;
     readonly message: string;

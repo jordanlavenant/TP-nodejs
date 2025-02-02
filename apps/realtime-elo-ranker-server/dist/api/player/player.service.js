@@ -36,6 +36,7 @@ let PlayerService = class PlayerService {
     create(player) {
         return this.findAll().then((players) => {
             if (players.length === 0) {
+                this.eventEmitter.emit('ranking.updated', new ranking_update_event_1.RankingUpdateEvent(player));
                 return this.players.save(player);
             }
             else {
