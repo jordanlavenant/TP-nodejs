@@ -1,6 +1,6 @@
 import { Controller, Get, Header, Res } from '@nestjs/common';
 import { RankingService } from './ranking.service';
-import { Player } from '@entities/player.entity';
+import { Player } from '../../entities/player.entity';
 import { Response } from 'express';
 import { Error } from 'src/types/types';
 import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
@@ -12,7 +12,7 @@ import { RankingErrorEvent } from './events/ranking-error.event';
 export class RankingController {
   constructor(
     private readonly appService: RankingService,
-    private eventEmitter: EventEmitter2
+    private eventEmitter: EventEmitter2,
   ) {}
 
   // TODO: retirer la promesse (async await)
@@ -39,20 +39,20 @@ export class RankingController {
       console.log('Ranking update event received:', player);
       const event: RankingUpdateEvent = {
         type: 'RankingUpdate',
-        player,
-      }
+        player: player as Player,
+      };
       res.write(`data: ${JSON.stringify(event)}\n\n`);
-    }
+    };
 
     const errorListener = () => {
       console.log('Ranking error event received');
       const event: RankingErrorEvent = {
         type: 'Error',
         code: 1,
-        message: 'Erreur lors de la récupération des données'
-      }
+        message: 'Erreur lors de la récupération des données',
+      };
       res.write(`data: ${JSON.stringify(event)}\n\n`);
-    }
+    };
 
     this.eventEmitter.on('ranking.updated', listener);
     this.eventEmitter.on('ranking.error', errorListener);
@@ -69,5 +69,4 @@ export class RankingController {
   onRankingUpdate(event: RankingUpdateEvent) {
     console.log('Ranking update event received:', event);
   }
-
 }

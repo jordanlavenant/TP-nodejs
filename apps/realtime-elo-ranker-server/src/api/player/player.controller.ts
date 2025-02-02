@@ -7,9 +7,7 @@ import { CreatePlayerDto } from './dto/create-player.dto';
 
 @Controller('api/player')
 export class PlayerController {
-  constructor(
-    private readonly appService: PlayerService,
-  ) {}
+  constructor(private readonly appService: PlayerService) {}
 
   // TODO: retirer la promesse (async await)
   @Post()
@@ -17,7 +15,6 @@ export class PlayerController {
     @Body() createPlayerDto: CreatePlayerDto,
     @Res() res: Response,
   ): Promise<Response<Player | Error>> {
-
     if (!createPlayerDto.id) {
       return res.status(400).send({
         code: 0,
@@ -27,7 +24,7 @@ export class PlayerController {
 
     const alreadyExist = await this.appService.playerExists(createPlayerDto.id);
 
-    if (alreadyExist) { 
+    if (alreadyExist) {
       return res.status(409).send({
         code: 0,
         message: 'Le joueur existe déjà',

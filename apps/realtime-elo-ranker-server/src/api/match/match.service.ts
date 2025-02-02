@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Match } from '@entities/match.entity';
-import { Player } from '@entities/player.entity';
+import { Match } from '../../entities/match.entity';
+import { Player } from '../../entities/player.entity';
 import { Repository } from 'typeorm';
-import { RankingUpdateEvent } from '@ranking/events/ranking-update.event';
-import { updateRank } from '@utils/elo';
+import { RankingUpdateEvent } from '../ranking/events/ranking-update.event';
+import { updateRank } from '../../utils/elo';
 
 @Injectable()
 export class MatchService {
@@ -31,25 +31,21 @@ export class MatchService {
     return this.matches.save(match);
   }
 
-  async updateElo(winner: string, loser: string, draw: boolean) : Promise<void> {
+  async updateElo(winner: string, loser: string, draw: boolean): Promise<void> {
     const winnerDB = await this.players.findOne({ where: { id: winner } });
     const loserDB = await this.players.findOne({ where: { id: loser } });
 
-    if (!winnerDB || !loserDB) return
+    if (!winnerDB || !loserDB) return;
 
-    const { winnerPlayer, loserPlayer } = updateRank(winnerDB, loserDB, draw)
+    const { winnerPlayer, loserPlayer } = updateRank(winnerDB, loserDB, draw);
 
     this.eventEmitter.emit(
       'ranking.updated',
-      new RankingUpdateEvent(
-        winnerPlayer,
-      )
+      new RankingUpdateEvent(winnerPlayer),
     );
     this.eventEmitter.emit(
       'ranking.updated',
-      new RankingUpdateEvent(
-        loserPlayer,
-      )
+      new RankingUpdateEvent(loserPlayer),
     );
   }
 }

@@ -3,7 +3,6 @@ import { PlayerController } from './player.controller';
 import { PlayerService } from './player.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Player } from 'src/entities/player.entity';
-import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Player])],

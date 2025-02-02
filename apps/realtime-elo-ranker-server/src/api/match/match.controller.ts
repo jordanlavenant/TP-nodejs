@@ -1,16 +1,16 @@
 import { Body, Controller, Post, Res } from '@nestjs/common';
-import { Match } from '@entities/match.entity';
+import { Match } from '../../entities/match.entity';
 import { MatchService } from './match.service';
 import { Response } from 'express';
 import { Error } from 'src/types/types';
 import { CreateMatchDto } from './dto/create-match.dto';
-import { PlayerService } from '@player/player.service';
+import { PlayerService } from '../player/player.service';
 
 @Controller('api/match')
 export class MatchController {
   constructor(
     private readonly appService: MatchService,
-    private readonly playerService: PlayerService
+    private readonly playerService: PlayerService,
   ) {}
 
   @Post()
@@ -18,14 +18,14 @@ export class MatchController {
     @Body() createMatchDto: CreateMatchDto,
     @Res() res: Response,
   ): Promise<Response<Match | Error>> {
-
-    const { winner, loser, draw } = createMatchDto
+    const { winner, loser, draw } = createMatchDto;
 
     // Check if winner and loser are the same
     if (winner === loser) {
       return res.status(422).send({
         code: 0,
-        message: "Le gagnant et le perdant ne peuvent pas être la même personne",
+        message:
+          'Le gagnant et le perdant ne peuvent pas être la même personne',
       }) as Response<Error>;
     }
 
@@ -40,9 +40,8 @@ export class MatchController {
       }) as Response<Error>;
     }
 
-    this.appService.create(createMatchDto)
-    .then(() => {
-      this.appService.updateElo(winner, loser, draw);
+    void this.appService.create(createMatchDto).then(() => {
+      void this.appService.updateElo(winner, loser, draw);
     });
 
     return res.status(200).send(createMatchDto) as Response<Match>;

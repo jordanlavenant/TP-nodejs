@@ -1,4 +1,4 @@
-import { RankingEvent } from "./ranking.event";
+import { RankingEvent } from './ranking.event';
 
 export class RankingErrorEvent extends RankingEvent {
   constructor(

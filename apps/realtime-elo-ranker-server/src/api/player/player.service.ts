@@ -37,9 +37,7 @@ export class PlayerService {
 
         this.eventEmitter.emit(
           'ranking.updated',
-          new RankingUpdateEvent(
-            player
-          ),
+          new RankingUpdateEvent(player),
         );
         return this.players.save(player);
       }
