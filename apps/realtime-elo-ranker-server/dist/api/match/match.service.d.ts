@@ -1,0 +1,14 @@
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { Match } from 'src/entities/match.entity';
+import { Player } from 'src/entities/player.entity';
+import { Repository } from 'typeorm';
+export declare class MatchService {
+    private readonly matches;
+    private readonly players;
+    private readonly eventEmitter;
+    constructor(matches: Repository<Match>, players: Repository<Player>, eventEmitter: EventEmitter2);
+    findAll(): Promise<Match[]>;
+    findOnePlayer(id: string): Promise<Player | null>;
+    create(match: Match): Promise<Match>;
+    updateElo(winner: string, loser: string, draw: boolean): Promise<void>;
+}

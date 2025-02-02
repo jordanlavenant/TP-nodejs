@@ -1,0 +1,1 @@
+{"version":3,"file":"ranking-update.event.js","sourceRoot":"","sources":["../../../../src/api/ranking/events/ranking-update.event.ts"],"names":[],"mappings":";;;AACA,mDAA+C;AAE/C,MAAa,kBAAmB,SAAQ,4BAAY;IAClD,YACkB,MAAc;QAE9B,KAAK,CAAC,eAAe,CAAC,CAAC;QAFP,WAAM,GAAN,MAAM,CAAQ;IAGhC,CAAC;CACF;AAND,gDAMC"}
