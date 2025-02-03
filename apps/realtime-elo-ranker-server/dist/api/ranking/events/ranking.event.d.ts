@@ -1,4 +1,4 @@
-import { Player } from "@entities/player.entity";
+import { Player } from '@entities/player.entity';
 export declare class RankingEvent {
     readonly type: string;
     readonly player: Player;

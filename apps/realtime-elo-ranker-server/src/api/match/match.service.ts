@@ -40,17 +40,11 @@ export class MatchService {
 
     this.eventEmitter.emit(
       'rankingEvent',
-      new RankingEvent(
-        'RankingEvent',
-        winnerPlayer
-      ),
+      new RankingEvent('RankingEvent', winnerPlayer),
     );
     this.eventEmitter.emit(
       'rankingEvent',
-      new RankingEvent(
-        'RankingEvent',
-        loserPlayer
-      ),
+      new RankingEvent('RankingEvent', loserPlayer),
     );
   }
 }

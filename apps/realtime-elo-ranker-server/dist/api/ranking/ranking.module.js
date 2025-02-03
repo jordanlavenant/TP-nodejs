@@ -18,7 +18,7 @@ let RankingModule = class RankingModule {
 exports.RankingModule = RankingModule;
 exports.RankingModule = RankingModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([player_entity_1.Player])],
+        imports: [typeorm_1.TypeOrmModule.forFeature([player_entity_1.Player]), event_emitter_1.EventEmitter2],
         controllers: [ranking_controller_1.RankingController],
         providers: [ranking_service_1.RankingService, event_emitter_1.EventEmitter2],
         exports: [ranking_service_1.RankingService],

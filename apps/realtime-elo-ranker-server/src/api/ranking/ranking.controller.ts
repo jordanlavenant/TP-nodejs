@@ -1,4 +1,4 @@
-import { Controller, Get, Req, Res, Sse } from '@nestjs/common';
+import { Controller, Get, Res, Sse } from '@nestjs/common';
 import { RankingService } from './ranking.service';
 import { Player } from '../../entities/player.entity';
 import { Response } from 'express';
@@ -28,11 +28,12 @@ export class RankingController {
 
   @Sse('events')
   subscribeToEvents(): Observable<MessageEvent> {
-    console.log('subscribeToEvents');
-    return fromEvent(this.eventEmitter, 'rankingEvent')
-      .pipe(map(payload => {
-        console.log(payload);
-        return ({ data: JSON.stringify(payload)}) as MessageEvent;
-      }));
+    console.log('Subscribed to rankingEvent');
+    return fromEvent(this.eventEmitter, 'rankingEvent').pipe(
+      map((payload) => {
+        console.log('Event received:', payload);
+        return { data: JSON.stringify(payload) } as MessageEvent;
+      }),
+    );
   }
 }

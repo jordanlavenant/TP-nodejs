@@ -6,7 +6,7 @@ import { Player } from '@entities/player.entity';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Player])],
+  imports: [TypeOrmModule.forFeature([Player]), EventEmitter2],
   controllers: [RankingController],
   providers: [RankingService, EventEmitter2],
   exports: [RankingService],
