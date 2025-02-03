@@ -64,9 +64,4 @@ export class RankingController {
       res.end();
     });
   }
-
-  @OnEvent('ranking.updated')
-  onRankingUpdate(event: RankingUpdateEvent) {
-    console.log('Ranking update event received:', event);
-  }
 }

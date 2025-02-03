@@ -16,7 +16,6 @@ exports.RankingController = void 0;
 const common_1 = require("@nestjs/common");
 const ranking_service_1 = require("./ranking.service");
 const event_emitter_1 = require("@nestjs/event-emitter");
-const ranking_update_event_1 = require("./events/ranking-update.event");
 let RankingController = class RankingController {
     constructor(appService, eventEmitter) {
         this.appService = appService;
@@ -60,9 +59,6 @@ let RankingController = class RankingController {
             res.end();
         });
     }
-    onRankingUpdate(event) {
-        console.log('Ranking update event received:', event);
-    }
 };
 exports.RankingController = RankingController;
 __decorate([
@@ -82,12 +78,6 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], RankingController.prototype, "getEvents", null);
-__decorate([
-    (0, event_emitter_1.OnEvent)('ranking.updated'),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [ranking_update_event_1.RankingUpdateEvent]),
-    __metadata("design:returntype", void 0)
-], RankingController.prototype, "onRankingUpdate", null);
 exports.RankingController = RankingController = __decorate([
     (0, common_1.Controller)('api/ranking'),
     __metadata("design:paramtypes", [ranking_service_1.RankingService,
