@@ -85,12 +85,14 @@ export default function Home() {
     }
     const eventSource = subscribeRankingEvents(API_BASE_URL);
     eventSource.onmessage = (msg: MessageEvent) => {
+      console.log(msg)
       const event: RankingEvent = JSON.parse(msg.data);
       if (event.type === "Error") {
         console.error(event.message);
         return;
       }
       if (event.type === RankingEventType.RankingUpdate) {
+        console.log(event)
         updateLadderData(event.player);
       }
     };

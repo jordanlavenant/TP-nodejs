@@ -14,6 +14,9 @@ importers:
       class-validator:
         specifier: ^0.14.1
         version: 0.14.1
+      rxjs:
+        specifier: ^7.8.1
+        version: 7.8.1
       sqlite3:
         specifier: ^5.1.7
         version: 5.1.7

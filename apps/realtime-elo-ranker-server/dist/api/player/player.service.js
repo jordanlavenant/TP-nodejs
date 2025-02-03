@@ -18,7 +18,7 @@ const player_entity_1 = require("../../entities/player.entity");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const event_emitter_1 = require("@nestjs/event-emitter");
-const ranking_update_event_1 = require("../ranking/events/ranking-update.event");
+const ranking_event_1 = require("../ranking/events/ranking.event");
 let PlayerService = class PlayerService {
     constructor(players, eventEmitter) {
         this.players = players;
@@ -36,14 +36,14 @@ let PlayerService = class PlayerService {
     create(player) {
         return this.findAll().then((players) => {
             if (players.length === 0) {
-                this.eventEmitter.emit('ranking.updated', new ranking_update_event_1.RankingUpdateEvent(player));
+                this.eventEmitter.emit('rankingEvent', new ranking_event_1.RankingEvent('RankingEvent', player));
                 return this.players.save(player);
             }
             else {
                 const avgRank = players.reduce((acc, player) => acc + player.rank, 0) /
                     players.length;
                 player.rank = avgRank;
-                this.eventEmitter.emit('ranking.updated', new ranking_update_event_1.RankingUpdateEvent(player));
+                this.eventEmitter.emit('rankingEvent', new ranking_event_1.RankingEvent('RankingEvent', player));
                 return this.players.save(player);
             }
         });

@@ -4,8 +4,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Match } from '../../entities/match.entity';
 import { Player } from '../../entities/player.entity';
 import { Repository } from 'typeorm';
-import { RankingUpdateEvent } from '../ranking/events/ranking-update.event';
 import { updateRank } from '../../utils/elo';
+import { RankingEvent } from '@rankingevents/ranking.event';
 
 @Injectable()
 export class MatchService {
@@ -39,12 +39,18 @@ export class MatchService {
     await this.players.save(loserPlayer);
 
     this.eventEmitter.emit(
-      'ranking.updated',
-      new RankingUpdateEvent(winnerPlayer),
+      'rankingEvent',
+      new RankingEvent(
+        'RankingEvent',
+        winnerPlayer
+      ),
     );
     this.eventEmitter.emit(
-      'ranking.updated',
-      new RankingUpdateEvent(loserPlayer),
+      'rankingEvent',
+      new RankingEvent(
+        'RankingEvent',
+        loserPlayer
+      ),
     );
   }
 }

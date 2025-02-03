@@ -19,8 +19,8 @@ const typeorm_1 = require("@nestjs/typeorm");
 const match_entity_1 = require("../../entities/match.entity");
 const player_entity_1 = require("../../entities/player.entity");
 const typeorm_2 = require("typeorm");
-const ranking_update_event_1 = require("../ranking/events/ranking-update.event");
 const elo_1 = require("../../utils/elo");
+const ranking_event_1 = require("../ranking/events/ranking.event");
 let MatchService = class MatchService {
     constructor(matches, players, eventEmitter) {
         this.matches = matches;
@@ -41,8 +41,8 @@ let MatchService = class MatchService {
         const { winnerPlayer, loserPlayer } = (0, elo_1.updateRank)(winnerDB, loserDB, draw);
         await this.players.save(winnerPlayer);
         await this.players.save(loserPlayer);
-        this.eventEmitter.emit('ranking.updated', new ranking_update_event_1.RankingUpdateEvent(winnerPlayer));
-        this.eventEmitter.emit('ranking.updated', new ranking_update_event_1.RankingUpdateEvent(loserPlayer));
+        this.eventEmitter.emit('rankingEvent', new ranking_event_1.RankingEvent('RankingEvent', winnerPlayer));
+        this.eventEmitter.emit('rankingEvent', new ranking_event_1.RankingEvent('RankingEvent', loserPlayer));
     }
 };
 exports.MatchService = MatchService;
