@@ -48,7 +48,6 @@ let MatchService = class MatchService {
         });
     }
     emitPlayerUpdate(player) {
-        console.log("Event emitted:", player);
         this.eventEmitter.emit(_constantsevents_1.RANKING_EVENT, new ranking_event_1.RankingEvent('RankingUpdate', player));
     }
     save(match) {

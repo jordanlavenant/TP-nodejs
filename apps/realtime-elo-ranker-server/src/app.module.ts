@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { PlayerModule } from './api/player/player.module';
-import { MatchModule } from './api/match/match.module';
-import { RankingModule } from './api/ranking/ranking.module';
-import { EventEmitterModule } from '@nestjs/event-emitter';
+import { PlayerModule } from 'src/api/player/player.module';
+import { PlayerController } from 'src/api/player/player.controller';
+import { MatchModule } from 'src/api/match/match.module';
+import { RankingModule } from 'src/api/ranking/ranking.module';
 
 @Module({
   imports: [
@@ -15,12 +15,11 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
-    EventEmitterModule.forRoot(),
     PlayerModule,
     MatchModule,
     RankingModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, PlayerController],
   providers: [AppService],
 })
 export class AppModule {}

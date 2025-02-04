@@ -50,7 +50,10 @@ let PlayerService = class PlayerService {
         });
     }
     emitPlayerUpdate(player) {
+<<<<<<< Updated upstream
         console.log("Event emitted:", player);
+=======
+>>>>>>> Stashed changes
         this.eventEmitter.emit(_constantsevents_1.RANKING_EVENT, new ranking_event_1.RankingEvent('RankingUpdate', player));
     }
     save(player) {

@@ -8,13 +8,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
+const typeorm_1 = require("@nestjs/typeorm");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
-const typeorm_1 = require("@nestjs/typeorm");
 const player_module_1 = require("./api/player/player.module");
+const player_controller_1 = require("./api/player/player.controller");
 const match_module_1 = require("./api/match/match.module");
 const ranking_module_1 = require("./api/ranking/ranking.module");
-const event_emitter_1 = require("@nestjs/event-emitter");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -27,12 +27,11 @@ exports.AppModule = AppModule = __decorate([
                 entities: [__dirname + '/**/*.entity{.ts,.js}'],
                 synchronize: true,
             }),
-            event_emitter_1.EventEmitterModule.forRoot(),
             player_module_1.PlayerModule,
             match_module_1.MatchModule,
             ranking_module_1.RankingModule,
         ],
-        controllers: [app_controller_1.AppController],
+        controllers: [app_controller_1.AppController, player_controller_1.PlayerController],
         providers: [app_service_1.AppService],
     })
 ], AppModule);

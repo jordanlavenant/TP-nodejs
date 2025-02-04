@@ -3,17 +3,14 @@ import { RankingService } from './ranking.service';
 import { Player } from '../../entities/player.entity';
 import { Response } from 'express';
 import { Error } from 'src/types/types';
-import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
-import { fromEvent, interval, map, merge, Observable } from 'rxjs';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { fromEvent, map, Observable } from 'rxjs';
 import { RANKING_EVENT } from '@constants/events';
-import { RankingEvent } from '@rankingevents/ranking.event';
-import { PlayerService } from '@player/player.service';
 
 @Controller('api/ranking')
 export class RankingController {
   constructor(
     private readonly appService: RankingService,
-    private readonly playerService: PlayerService,
     private eventEmitter: EventEmitter2,
   ) {}
 
@@ -31,22 +28,13 @@ export class RankingController {
   }
 
   @Sse('events')
-  sse(): Observable<MessageEvent> {
-    const heartbeat = interval(25000).pipe(
-      map(() => ({ data: { type: 'ping' } } as MessageEvent)),
+  subscribeToEvents(): Observable<MessageEvent> {
+    return fromEvent(this.eventEmitter, RANKING_EVENT).pipe(
+      map((payload) => {
+        return {
+          data: JSON.stringify(payload),
+        } as MessageEvent;
+      }),
     );
-  
-    const rankingEvents = fromEvent(this.eventEmitter, RANKING_EVENT).pipe(
-      map((event: { player: Player }) => ({
-        data: { type: 'RankingUpdate', player: event.player },
-      } as MessageEvent)),
-    );
-  
-    return merge(heartbeat, rankingEvents);
   }
-
-  // @OnEvent(RANKING_EVENT)
-  // handleRankingEvent(event: RankingEvent) {
-  //   console.log(event);
-  // }
 }

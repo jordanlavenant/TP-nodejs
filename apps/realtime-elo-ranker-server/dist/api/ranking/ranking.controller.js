@@ -18,11 +18,13 @@ const ranking_service_1 = require("./ranking.service");
 const event_emitter_1 = require("@nestjs/event-emitter");
 const rxjs_1 = require("rxjs");
 const events_1 = require("../../constants/events");
+<<<<<<< Updated upstream
 const player_service_1 = require("../player/player.service");
+=======
+>>>>>>> Stashed changes
 let RankingController = class RankingController {
-    constructor(appService, playerService, eventEmitter) {
+    constructor(appService, eventEmitter) {
         this.appService = appService;
-        this.playerService = playerService;
         this.eventEmitter = eventEmitter;
     }
     async findAll(res) {
@@ -35,12 +37,22 @@ let RankingController = class RankingController {
         }
         return res.status(200).send(players);
     }
+<<<<<<< Updated upstream
     sse() {
         const heartbeat = (0, rxjs_1.interval)(25000).pipe((0, rxjs_1.map)(() => ({ data: { type: 'ping' } })));
         const rankingEvents = (0, rxjs_1.fromEvent)(this.eventEmitter, events_1.RANKING_EVENT).pipe((0, rxjs_1.map)((event) => ({
             data: { type: 'RankingUpdate', player: event.player },
         })));
         return (0, rxjs_1.merge)(heartbeat, rankingEvents);
+=======
+    subscribeToEvents() {
+        return (0, rxjs_1.fromEvent)(this.eventEmitter, events_1.RANKING_EVENT).pipe((0, rxjs_1.map)((payload) => {
+            console.log('Event emitted:', payload);
+            return {
+                data: JSON.stringify(payload),
+            };
+        }));
+>>>>>>> Stashed changes
     }
 };
 exports.RankingController = RankingController;
@@ -60,7 +72,6 @@ __decorate([
 exports.RankingController = RankingController = __decorate([
     (0, common_1.Controller)('api/ranking'),
     __metadata("design:paramtypes", [ranking_service_1.RankingService,
-        player_service_1.PlayerService,
         event_emitter_1.EventEmitter2])
 ], RankingController);
 //# sourceMappingURL=ranking.controller.js.map

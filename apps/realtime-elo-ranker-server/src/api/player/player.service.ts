@@ -36,7 +36,7 @@ export class PlayerService {
         const avgRank =
           players.reduce((acc, player) => acc + player.rank, 0) /
           players.length;
-        player.rank = avgRank;
+        player.rank = Math.round(avgRank);
 
         this.emitPlayerUpdate(player);
 
@@ -46,7 +46,6 @@ export class PlayerService {
   }
 
   emitPlayerUpdate(player: Player): void {
-    console.log("Event emitted:", player);
     this.eventEmitter.emit(
       RANKING_EVENT,
       new RankingEvent('RankingUpdate', player),

@@ -12,16 +12,16 @@ const match_service_1 = require("./match.service");
 const match_controller_1 = require("./match.controller");
 const typeorm_1 = require("@nestjs/typeorm");
 const match_entity_1 = require("../../entities/match.entity");
-const player_entity_1 = require("../../entities/player.entity");
-const player_service_1 = require("../player/player.service");
+const _entitiesplayer_entity_1 = require("../../entities/player.entity");
+const _playerplayer_service_1 = require("../player/player.service");
 let MatchModule = class MatchModule {
 };
 exports.MatchModule = MatchModule;
 exports.MatchModule = MatchModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([match_entity_1.Match, player_entity_1.Player])],
+        imports: [typeorm_1.TypeOrmModule.forFeature([match_entity_1.Match, _entitiesplayer_entity_1.Player])],
         controllers: [match_controller_1.MatchController],
-        providers: [match_service_1.MatchService, player_service_1.PlayerService],
+        providers: [match_service_1.MatchService, _playerplayer_service_1.PlayerService],
         exports: [match_service_1.MatchService],
     })
 ], MatchModule);
