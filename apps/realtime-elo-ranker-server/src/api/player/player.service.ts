@@ -33,7 +33,7 @@ export class PlayerService {
           RANKING_EVENT,
           new RankingEvent('RankingEvent', player),
         );
-        return this.players.save(player);
+        return this.save(player);
       } else {
         const avgRank =
           players.reduce((acc, player) => acc + player.rank, 0) /
@@ -44,8 +44,12 @@ export class PlayerService {
           RANKING_EVENT,
           new RankingEvent('RankingEvent', player),
         );
-        return this.players.save(player);
+        return this.save(player);
       }
     });
+  }
+
+  save(player: Player): Promise<Player> {
+    return this.players.save(player);
   }
 }

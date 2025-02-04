@@ -4,14 +4,16 @@ import { Player } from '../../entities/player.entity';
 import { Response } from 'express';
 import { Error } from 'src/types/types';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { fromEvent, interval, map, Observable } from 'rxjs';
-import { RANKING_EVENT } from '@constants/events';
+import { interval, map, Observable } from 'rxjs';
+// import { RANKING_EVENT } from '@constants/events';
 import { RankingEvent } from '@rankingevents/ranking.event';
+import { PlayerService } from '@player/player.service';
 
 @Controller('api/ranking')
 export class RankingController {
   constructor(
     private readonly appService: RankingService,
+    private readonly playerService: PlayerService,
     private eventEmitter: EventEmitter2,
   ) {}
 
@@ -32,17 +34,21 @@ export class RankingController {
   subscribeToEvents(): Observable<MessageEvent> {
     return interval(3000).pipe(
       map((_, index) => {
-        return { data: JSON.stringify(
-          new RankingEvent('RankingUpdate', { id: index.toString(), rank: index }),
-        ) } as MessageEvent;
+        const player = {
+          id: index.toString(),
+          rank: index,
+        };
+        this.playerService.save(player);
+        return {
+          data: JSON.stringify(new RankingEvent('RankingUpdate', player)),
+        } as MessageEvent;
       }),
     );
 
-
     // return fromEvent(this.eventEmitter, RANKING_EVENT).pipe(
-      // map((payload) => {
-        // return { data: JSON.stringify(payload) } as MessageEvent;
-      // }),
+    // map((payload) => {
+    // return { data: JSON.stringify(payload) } as MessageEvent;
+    // }),
     // );
   }
 }

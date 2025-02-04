@@ -9,4 +9,5 @@ export declare class PlayerService {
     playerExists(id: string): Promise<boolean>;
     findAll(): Promise<Player[]>;
     create(player: Player): Promise<Player>;
+    save(player: Player): Promise<Player>;
 }

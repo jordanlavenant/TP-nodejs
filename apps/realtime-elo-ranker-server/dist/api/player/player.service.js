@@ -38,16 +38,19 @@ let PlayerService = class PlayerService {
         return this.findAll().then((players) => {
             if (players.length === 0) {
                 this.eventEmitter.emit(_constantsevents_1.RANKING_EVENT, new ranking_event_1.RankingEvent('RankingEvent', player));
-                return this.players.save(player);
+                return this.save(player);
             }
             else {
                 const avgRank = players.reduce((acc, player) => acc + player.rank, 0) /
                     players.length;
                 player.rank = avgRank;
                 this.eventEmitter.emit(_constantsevents_1.RANKING_EVENT, new ranking_event_1.RankingEvent('RankingEvent', player));
-                return this.players.save(player);
+                return this.save(player);
             }
         });
+    }
+    save(player) {
+        return this.players.save(player);
     }
 };
 exports.PlayerService = PlayerService;
