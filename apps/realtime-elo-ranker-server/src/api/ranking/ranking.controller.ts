@@ -4,7 +4,9 @@ import { Player } from '../../entities/player.entity';
 import { Response } from 'express';
 import { Error } from 'src/types/types';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { fromEvent, map, Observable } from 'rxjs';
+import { fromEvent, interval, map, Observable } from 'rxjs';
+import { RANKING_EVENT } from '@constants/events';
+import { RankingEvent } from '@rankingevents/ranking.event';
 
 @Controller('api/ranking')
 export class RankingController {
@@ -28,12 +30,19 @@ export class RankingController {
 
   @Sse('events')
   subscribeToEvents(): Observable<MessageEvent> {
-    console.log('Subscribed to rankingEvent');
-    return fromEvent(this.eventEmitter, 'rankingEvent').pipe(
-      map((payload) => {
-        console.log('Event received:', payload);
-        return { data: JSON.stringify(payload) } as MessageEvent;
+    return interval(3000).pipe(
+      map((_, index) => {
+        return { data: JSON.stringify(
+          new RankingEvent('RankingUpdate', { id: index.toString(), rank: index }),
+        ) } as MessageEvent;
       }),
     );
+
+
+    // return fromEvent(this.eventEmitter, RANKING_EVENT).pipe(
+      // map((payload) => {
+        // return { data: JSON.stringify(payload) } as MessageEvent;
+      // }),
+    // );
   }
 }

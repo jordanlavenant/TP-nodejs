@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { RankingEvent } from '@rankingevents/ranking.event';
+import { RANKING_EVENT } from '@constantsevents';
 
 @Injectable()
 export class PlayerService {
@@ -29,7 +30,7 @@ export class PlayerService {
     return this.findAll().then((players) => {
       if (players.length === 0) {
         this.eventEmitter.emit(
-          'rankingEvent',
+          RANKING_EVENT,
           new RankingEvent('RankingEvent', player),
         );
         return this.players.save(player);
@@ -40,7 +41,7 @@ export class PlayerService {
         player.rank = avgRank;
 
         this.eventEmitter.emit(
-          'rankingEvent',
+          RANKING_EVENT,
           new RankingEvent('RankingEvent', player),
         );
         return this.players.save(player);

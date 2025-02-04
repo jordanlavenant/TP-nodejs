@@ -6,6 +6,7 @@ import { Player } from '../../entities/player.entity';
 import { Repository } from 'typeorm';
 import { updateRank } from '../../utils/elo';
 import { RankingEvent } from '@rankingevents/ranking.event';
+import { RANKING_EVENT } from '@constantsevents';
 
 @Injectable()
 export class MatchService {
@@ -39,11 +40,11 @@ export class MatchService {
     await this.players.save(loserPlayer);
 
     this.eventEmitter.emit(
-      'rankingEvent',
+      RANKING_EVENT,
       new RankingEvent('RankingEvent', winnerPlayer),
     );
     this.eventEmitter.emit(
-      'rankingEvent',
+      RANKING_EVENT,
       new RankingEvent('RankingEvent', loserPlayer),
     );
   }

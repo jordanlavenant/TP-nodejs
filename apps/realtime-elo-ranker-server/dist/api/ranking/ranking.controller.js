@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const ranking_service_1 = require("./ranking.service");
 const event_emitter_1 = require("@nestjs/event-emitter");
 const rxjs_1 = require("rxjs");
+const ranking_event_1 = require("./events/ranking.event");
 let RankingController = class RankingController {
     constructor(appService, eventEmitter) {
         this.appService = appService;
@@ -33,10 +34,8 @@ let RankingController = class RankingController {
         return res.status(200).send(players);
     }
     subscribeToEvents() {
-        console.log('Subscribed to rankingEvent');
-        return (0, rxjs_1.fromEvent)(this.eventEmitter, 'rankingEvent').pipe((0, rxjs_1.map)((payload) => {
-            console.log('Event received:', payload);
-            return { data: JSON.stringify(payload) };
+        return (0, rxjs_1.interval)(3000).pipe((0, rxjs_1.map)((_, index) => {
+            return { data: JSON.stringify(new ranking_event_1.RankingEvent('RankingUpdate', { id: index.toString(), rank: index })) };
         }));
     }
 };
@@ -50,7 +49,6 @@ __decorate([
 ], RankingController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Sse)('events'),
-    (0, event_emitter_1.OnEvent)('rankingEvent'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", rxjs_1.Observable)

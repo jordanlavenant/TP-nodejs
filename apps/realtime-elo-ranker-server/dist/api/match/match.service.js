@@ -21,6 +21,7 @@ const player_entity_1 = require("../../entities/player.entity");
 const typeorm_2 = require("typeorm");
 const elo_1 = require("../../utils/elo");
 const ranking_event_1 = require("../ranking/events/ranking.event");
+const _constantsevents_1 = require("../../constants/events");
 let MatchService = class MatchService {
     constructor(matches, players, eventEmitter) {
         this.matches = matches;
@@ -41,8 +42,8 @@ let MatchService = class MatchService {
         const { winnerPlayer, loserPlayer } = (0, elo_1.updateRank)(winnerDB, loserDB, draw);
         await this.players.save(winnerPlayer);
         await this.players.save(loserPlayer);
-        this.eventEmitter.emit('rankingEvent', new ranking_event_1.RankingEvent('RankingEvent', winnerPlayer));
-        this.eventEmitter.emit('rankingEvent', new ranking_event_1.RankingEvent('RankingEvent', loserPlayer));
+        this.eventEmitter.emit(_constantsevents_1.RANKING_EVENT, new ranking_event_1.RankingEvent('RankingEvent', winnerPlayer));
+        this.eventEmitter.emit(_constantsevents_1.RANKING_EVENT, new ranking_event_1.RankingEvent('RankingEvent', loserPlayer));
     }
 };
 exports.MatchService = MatchService;
