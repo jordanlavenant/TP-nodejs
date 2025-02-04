@@ -17,7 +17,7 @@ export class MatchService {
     @InjectRepository(Player)
     private readonly players: Repository<Player>,
 
-    private readonly eventEmitter: EventEmitter2,
+    private eventEmitter: EventEmitter2,
   ) {}
 
   findAll(): Promise<Match[]> {
@@ -25,7 +25,7 @@ export class MatchService {
   }
 
   create(match: Match): Promise<Match> {
-    return this.matches.save(match);
+    return this.save(match);
   }
 
   async updateElo(winner: string, loser: string, draw: boolean): Promise<void> {
@@ -36,16 +36,23 @@ export class MatchService {
 
     const { winnerPlayer, loserPlayer } = updateRank(winnerDB, loserDB, draw);
 
-    await this.players.save(winnerPlayer);
-    await this.players.save(loserPlayer);
+    await this.players.save(winnerPlayer).then(() => {
+      this.emitPlayerUpdate(winnerPlayer);
+    });
+    await this.players.save(loserPlayer).then(() => {
+      this.emitPlayerUpdate(loserPlayer);
+    });
+  }
 
+  emitPlayerUpdate(player: Player): void {
+    console.log("Event emitted:", player);
     this.eventEmitter.emit(
       RANKING_EVENT,
-      new RankingEvent('RankingUpdate', winnerPlayer),
+      new RankingEvent('RankingUpdate', player),
     );
-    this.eventEmitter.emit(
-      RANKING_EVENT,
-      new RankingEvent('RankingUpdate', loserPlayer),
-    );
+  }
+
+  save(match: Match): Promise<Match> {
+    return this.matches.save(match);
   }
 }

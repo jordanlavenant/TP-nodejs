@@ -1,1 +1,1 @@
-export const RANKING_EVENT = 'rankingEvent';
+export const RANKING_EVENT = 'ranking.event';

@@ -5,9 +5,11 @@ import { Repository } from 'typeorm';
 export declare class MatchService {
     private readonly matches;
     private readonly players;
-    private readonly eventEmitter;
+    private eventEmitter;
     constructor(matches: Repository<Match>, players: Repository<Player>, eventEmitter: EventEmitter2);
     findAll(): Promise<Match[]>;
     create(match: Match): Promise<Match>;
     updateElo(winner: string, loser: string, draw: boolean): Promise<void>;
+    emitPlayerUpdate(player: Player): void;
+    save(match: Match): Promise<Match>;
 }

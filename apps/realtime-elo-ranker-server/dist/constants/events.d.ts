@@ -1,1 +1,1 @@
-export declare const RANKING_EVENT = "rankingEvent";
+export declare const RANKING_EVENT = "ranking.event";

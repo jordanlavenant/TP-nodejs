@@ -32,7 +32,7 @@ let MatchService = class MatchService {
         return this.matches.find();
     }
     create(match) {
-        return this.matches.save(match);
+        return this.save(match);
     }
     async updateElo(winner, loser, draw) {
         const winnerDB = await this.players.findOne({ where: { id: winner } });
@@ -40,10 +40,19 @@ let MatchService = class MatchService {
         if (!winnerDB || !loserDB)
             return;
         const { winnerPlayer, loserPlayer } = (0, elo_1.updateRank)(winnerDB, loserDB, draw);
-        await this.players.save(winnerPlayer);
-        await this.players.save(loserPlayer);
-        this.eventEmitter.emit(_constantsevents_1.RANKING_EVENT, new ranking_event_1.RankingEvent('RankingUpdate', winnerPlayer));
-        this.eventEmitter.emit(_constantsevents_1.RANKING_EVENT, new ranking_event_1.RankingEvent('RankingUpdate', loserPlayer));
+        await this.players.save(winnerPlayer).then(() => {
+            this.emitPlayerUpdate(winnerPlayer);
+        });
+        await this.players.save(loserPlayer).then(() => {
+            this.emitPlayerUpdate(loserPlayer);
+        });
+    }
+    emitPlayerUpdate(player) {
+        console.log("Event emitted:", player);
+        this.eventEmitter.emit(_constantsevents_1.RANKING_EVENT, new ranking_event_1.RankingEvent('RankingUpdate', player));
+    }
+    save(match) {
+        return this.matches.save(match);
     }
 };
 exports.MatchService = MatchService;

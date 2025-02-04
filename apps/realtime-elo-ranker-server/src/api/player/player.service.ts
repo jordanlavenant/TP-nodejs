@@ -11,7 +11,7 @@ export class PlayerService {
   constructor(
     @InjectRepository(Player)
     private readonly players: Repository<Player>,
-    private readonly eventEmitter: EventEmitter2,
+    private eventEmitter: EventEmitter2,
   ) {}
 
   findOne(id: string): Promise<Player | null> {
@@ -29,10 +29,8 @@ export class PlayerService {
   create(player: Player): Promise<Player> {
     return this.findAll().then((players) => {
       if (players.length === 0) {
-        this.eventEmitter.emit(
-          RANKING_EVENT,
-          new RankingEvent('RankingUpdate', player),
-        );
+        this.emitPlayerUpdate(player);
+
         return this.save(player);
       } else {
         const avgRank =
@@ -40,13 +38,19 @@ export class PlayerService {
           players.length;
         player.rank = avgRank;
 
-        this.eventEmitter.emit(
-          RANKING_EVENT,
-          new RankingEvent('RankingUpdate', player),
-        );
+        this.emitPlayerUpdate(player);
+
         return this.save(player);
       }
     });
+  }
+
+  emitPlayerUpdate(player: Player): void {
+    console.log("Event emitted:", player);
+    this.eventEmitter.emit(
+      RANKING_EVENT,
+      new RankingEvent('RankingUpdate', player),
+    );
   }
 
   save(player: Player): Promise<Player> {

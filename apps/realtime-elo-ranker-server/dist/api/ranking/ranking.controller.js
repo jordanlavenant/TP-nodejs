@@ -18,7 +18,6 @@ const ranking_service_1 = require("./ranking.service");
 const event_emitter_1 = require("@nestjs/event-emitter");
 const rxjs_1 = require("rxjs");
 const events_1 = require("../../constants/events");
-const ranking_event_1 = require("./events/ranking.event");
 const player_service_1 = require("../player/player.service");
 let RankingController = class RankingController {
     constructor(appService, playerService, eventEmitter) {
@@ -36,26 +35,12 @@ let RankingController = class RankingController {
         }
         return res.status(200).send(players);
     }
-    subscribeToEvents() {
-<<<<<<< Updated upstream
-        return (0, rxjs_1.interval)(3000).pipe((0, rxjs_1.map)((_, index) => {
-            const player = {
-                id: index.toString(),
-                rank: index,
-            };
-            this.playerService.save(player);
-            return {
-                data: JSON.stringify(new ranking_event_1.RankingEvent('RankingUpdate', player)),
-            };
-=======
-        return (0, rxjs_1.fromEvent)(this.eventEmitter, events_1.RANKING_EVENT).pipe((0, rxjs_1.map)((payload) => {
-            console.log(payload);
-            return { data: JSON.stringify(payload) };
->>>>>>> Stashed changes
-        }));
-    }
-    handleRankingEvent(payload) {
-        console.log(payload);
+    sse() {
+        const heartbeat = (0, rxjs_1.interval)(25000).pipe((0, rxjs_1.map)(() => ({ data: { type: 'ping' } })));
+        const rankingEvents = (0, rxjs_1.fromEvent)(this.eventEmitter, events_1.RANKING_EVENT).pipe((0, rxjs_1.map)((event) => ({
+            data: { type: 'RankingUpdate', player: event.player },
+        })));
+        return (0, rxjs_1.merge)(heartbeat, rankingEvents);
     }
 };
 exports.RankingController = RankingController;
@@ -71,13 +56,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", rxjs_1.Observable)
-], RankingController.prototype, "subscribeToEvents", null);
-__decorate([
-    (0, event_emitter_1.OnEvent)(events_1.RANKING_EVENT),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [ranking_event_1.RankingEvent]),
-    __metadata("design:returntype", void 0)
-], RankingController.prototype, "handleRankingEvent", null);
+], RankingController.prototype, "sse", null);
 exports.RankingController = RankingController = __decorate([
     (0, common_1.Controller)('api/ranking'),
     __metadata("design:paramtypes", [ranking_service_1.RankingService,
