@@ -37,15 +37,25 @@ let PlayerService = class PlayerService {
     create(player) {
         return this.findAll().then((players) => {
             if (players.length === 0) {
+<<<<<<< Updated upstream
                 this.eventEmitter.emit(_constantsevents_1.RANKING_EVENT, new ranking_event_1.RankingEvent('RankingEvent', player));
                 return this.save(player);
+=======
+                this.eventEmitter.emit(_constantsevents_1.RANKING_EVENT, new ranking_event_1.RankingEvent('RankingUpdate', player));
+                return this.players.save(player);
+>>>>>>> Stashed changes
             }
             else {
                 const avgRank = players.reduce((acc, player) => acc + player.rank, 0) /
                     players.length;
                 player.rank = avgRank;
+<<<<<<< Updated upstream
                 this.eventEmitter.emit(_constantsevents_1.RANKING_EVENT, new ranking_event_1.RankingEvent('RankingEvent', player));
                 return this.save(player);
+=======
+                this.eventEmitter.emit(_constantsevents_1.RANKING_EVENT, new ranking_event_1.RankingEvent('RankingUpdate', player));
+                return this.players.save(player);
+>>>>>>> Stashed changes
             }
         });
     }

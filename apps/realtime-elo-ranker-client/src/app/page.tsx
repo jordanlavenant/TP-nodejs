@@ -71,10 +71,9 @@ export default function Home() {
   const updateLadderData = useCallback((player: PlayerData) => {
     setLadderData((prevData) => {
       return quickSortPlayers(
-        prevData.map((p) => (p.id === player.id ? player : p))
-      );
+        prevData.filter((p) => p.id !== player.id).concat(player));
     });
-  }, []);
+  }, []); 
 
   useEffect(() => {
     try {
@@ -86,15 +85,12 @@ export default function Home() {
     const eventSource = subscribeRankingEvents(API_BASE_URL);
     eventSource.onmessage = (msg: MessageEvent) => {
       const event: RankingEvent = JSON.parse(msg.data);
-      console.log(event);
-      console.log(event.type, RankingEventType.RankingUpdate);
       if (event.type === "Error") {
         console.log('error')
         console.error(event.message);
         return;
       }
       if (event.type === RankingEventType.RankingUpdate) {
-        console.log('success')
         console.log(event)
         updateLadderData(event.player);
       }

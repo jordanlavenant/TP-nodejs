@@ -41,11 +41,11 @@ export class MatchService {
 
     this.eventEmitter.emit(
       RANKING_EVENT,
-      new RankingEvent('RankingEvent', winnerPlayer),
+      new RankingEvent('RankingUpdate', winnerPlayer),
     );
     this.eventEmitter.emit(
       RANKING_EVENT,
-      new RankingEvent('RankingEvent', loserPlayer),
+      new RankingEvent('RankingUpdate', loserPlayer),
     );
   }
 }

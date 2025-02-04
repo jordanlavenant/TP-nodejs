@@ -31,7 +31,7 @@ export class PlayerService {
       if (players.length === 0) {
         this.eventEmitter.emit(
           RANKING_EVENT,
-          new RankingEvent('RankingEvent', player),
+          new RankingEvent('RankingUpdate', player),
         );
         return this.save(player);
       } else {
@@ -42,7 +42,7 @@ export class PlayerService {
 
         this.eventEmitter.emit(
           RANKING_EVENT,
-          new RankingEvent('RankingEvent', player),
+          new RankingEvent('RankingUpdate', player),
         );
         return this.save(player);
       }

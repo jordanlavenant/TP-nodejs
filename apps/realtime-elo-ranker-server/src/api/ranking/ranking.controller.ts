@@ -1,11 +1,11 @@
-import { Controller, Get, Res, Sse } from '@nestjs/common';
+import { Controller, Get, ParseUUIDPipe, Res, Sse } from '@nestjs/common';
 import { RankingService } from './ranking.service';
 import { Player } from '../../entities/player.entity';
 import { Response } from 'express';
 import { Error } from 'src/types/types';
-import { EventEmitter2 } from '@nestjs/event-emitter';
-import { interval, map, Observable } from 'rxjs';
-// import { RANKING_EVENT } from '@constants/events';
+import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
+import { fromEvent, interval, map, Observable } from 'rxjs';
+import { RANKING_EVENT } from '@constants/events';
 import { RankingEvent } from '@rankingevents/ranking.event';
 import { PlayerService } from '@player/player.service';
 
@@ -32,23 +32,27 @@ export class RankingController {
 
   @Sse('events')
   subscribeToEvents(): Observable<MessageEvent> {
-    return interval(3000).pipe(
-      map((_, index) => {
-        const player = {
-          id: index.toString(),
-          rank: index,
-        };
-        this.playerService.save(player);
-        return {
-          data: JSON.stringify(new RankingEvent('RankingUpdate', player)),
-        } as MessageEvent;
+    // return interval(3000).pipe(
+    //   map((_, index) => {
+    //     return { data: JSON.stringify({
+    //       type: 'RankingUpdate',
+    //       player: {
+    //         id: index.toString(),
+    //         rank: Math.floor(Math.random() * 1000),
+    //       }
+    //     }) } as MessageEvent;
+    //   }),
+    // );
+    return fromEvent(this.eventEmitter, RANKING_EVENT).pipe(
+      map((payload) => {
+        console.log(payload);
+        return { data: JSON.stringify(payload) } as MessageEvent;
       }),
     );
+  }
 
-    // return fromEvent(this.eventEmitter, RANKING_EVENT).pipe(
-    // map((payload) => {
-    // return { data: JSON.stringify(payload) } as MessageEvent;
-    // }),
-    // );
+  @OnEvent(RANKING_EVENT)
+  handleRankingEvent(payload: RankingEvent): void {
+    console.log(payload);
   }
 }

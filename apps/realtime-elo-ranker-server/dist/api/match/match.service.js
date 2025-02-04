@@ -42,8 +42,8 @@ let MatchService = class MatchService {
         const { winnerPlayer, loserPlayer } = (0, elo_1.updateRank)(winnerDB, loserDB, draw);
         await this.players.save(winnerPlayer);
         await this.players.save(loserPlayer);
-        this.eventEmitter.emit(_constantsevents_1.RANKING_EVENT, new ranking_event_1.RankingEvent('RankingEvent', winnerPlayer));
-        this.eventEmitter.emit(_constantsevents_1.RANKING_EVENT, new ranking_event_1.RankingEvent('RankingEvent', loserPlayer));
+        this.eventEmitter.emit(_constantsevents_1.RANKING_EVENT, new ranking_event_1.RankingEvent('RankingUpdate', winnerPlayer));
+        this.eventEmitter.emit(_constantsevents_1.RANKING_EVENT, new ranking_event_1.RankingEvent('RankingUpdate', loserPlayer));
     }
 };
 exports.MatchService = MatchService;
