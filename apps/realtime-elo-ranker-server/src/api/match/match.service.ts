@@ -5,8 +5,8 @@ import { Match } from '../../entities/match.entity';
 import { Player } from '../../entities/player.entity';
 import { Repository } from 'typeorm';
 import { updateRank } from '../../utils/elo';
-import { RankingEvent } from '@rankingevents/ranking.event';
-import { RANKING_EVENT } from '@constantsevents';
+import { RankingEvent } from '@ranking/events/ranking.event';
+import { RANKING_EVENT } from '@constants/events';
 
 @Injectable()
 export class MatchService {

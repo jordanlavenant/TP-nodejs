@@ -1,4 +1,4 @@
-import { Controller, Get, ParseUUIDPipe, Res, Sse } from '@nestjs/common';
+import { Controller, Get, Res, Sse } from '@nestjs/common';
 import { RankingService } from './ranking.service';
 import { Player } from '../../entities/player.entity';
 import { Response } from 'express';
