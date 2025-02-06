@@ -1,7 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PlayerService } from './player.service';
-import { Player } from '@entities/player.entity';
+import { Player } from '../../entities/player.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 describe('PlayerService', () => {
   let service: PlayerService;
@@ -17,7 +18,7 @@ describe('PlayerService', () => {
         }),
         TypeOrmModule.forFeature([Player]),
       ],
-      providers: [PlayerService],
+      providers: [PlayerService, EventEmitter2],
     }).compile();
 
     service = module.get<PlayerService>(PlayerService);

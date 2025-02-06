@@ -1,4 +1,4 @@
 node_modules
 pnpm-lock.yaml
 apps/realtime-elo-ranker-server/dist
-apps/realtime-elo-ranker-server/*.db
+apps/realtime-elo-ranker-server/db.*

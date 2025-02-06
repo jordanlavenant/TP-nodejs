@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { Player } from 'src/entities/player.entity';
+import { Player } from '../../entities/player.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { RankingEvent } from '@ranking/events/ranking.event';
-import { RANKING_EVENT } from '@constants/events';
+import { RankingEvent } from '../ranking/events/ranking.event';
+import { RANKING_EVENT } from '../../constants/events';
 
 @Injectable()
 export class PlayerService {
