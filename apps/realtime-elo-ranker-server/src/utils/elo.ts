@@ -10,19 +10,17 @@ export const probability = (rating1: number, rating2: number) => {
 export const updateRank = (winner: Player, loser: Player, draw: boolean) => {
   const { winrate, loserate } = probability(winner.rank, loser.rank);
 
-  const newWinnerRank = Math.round(winner.rank + PONDERATION * (1 - winrate));
-  const newLoserRank = Math.round(
-    loser.rank + PONDERATION * (0 - (1 - loserate)),
-  );
+  const newWinnerRank = winner.rank + PONDERATION * ((draw ? 0.5 : 1) - winrate);
+  const newLoserRank = loser.rank + PONDERATION * ((draw ? 0.5 : 0) - loserate);
 
   return {
     winnerPlayer: {
       id: winner.id,
-      rank: newWinnerRank,
+      rank: Math.round(newWinnerRank),
     },
     loserPlayer: {
       id: loser.id,
-      rank: newLoserRank,
+      rank: Math.round(newLoserRank),
     },
   };
 };

@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { RankingEvent } from '../ranking/events/ranking.event';
 import { RANKING_EVENT } from '../../constants/events';
+import { updateRank } from 'src/utils/elo';
 
 @Injectable()
 export class PlayerService {
