@@ -10,6 +10,6 @@ import { PlayerService } from '../player/player.service';
   imports: [TypeOrmModule.forFeature([Match, Player])],
   controllers: [MatchController],
   providers: [MatchService, PlayerService],
-  exports: [MatchService],
+  exports: [MatchService, PlayerService],
 })
 export class MatchModule {}

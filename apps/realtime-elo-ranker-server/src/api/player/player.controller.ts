@@ -9,7 +9,6 @@ import { CreatePlayerDto } from './dto/create-player.dto';
 export class PlayerController {
   constructor(private readonly appService: PlayerService) {}
 
-  // TODO: retirer la promesse (async await)
   @Post()
   async create(
     @Body() createPlayerDto: CreatePlayerDto,

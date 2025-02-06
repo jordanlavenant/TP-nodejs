@@ -14,7 +14,6 @@ export class RankingController {
     private eventEmitter: EventEmitter2,
   ) {}
 
-  // TODO: retirer la promesse (async await)
   @Get()
   async findAll(@Res() res: Response): Promise<Response<Player[] | Error>> {
     const players = await this.appService.findAll();

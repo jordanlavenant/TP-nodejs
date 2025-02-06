@@ -28,7 +28,7 @@ export class MatchService {
     return this.save(match);
   }
 
-  async updateElo(winner: string, loser: string, draw: boolean): Promise<void> {
+  async updateElo(winner: string, loser: string, draw: boolean): Promise<{winner: Player, loser: Player} | void> {
     const winnerDB = await this.players.findOne({ where: { id: winner } });
     const loserDB = await this.players.findOne({ where: { id: loser } });
 
@@ -42,6 +42,8 @@ export class MatchService {
     await this.players.save(loserPlayer).then(() => {
       this.emitPlayerUpdate(loserPlayer);
     });
+
+    return { winner: winnerPlayer, loser: loserPlayer };
   }
 
   emitPlayerUpdate(player: Player): void {

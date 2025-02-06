@@ -44,6 +44,6 @@ export class MatchController {
       void this.appService.updateElo(winner, loser, draw);
     });
 
-    return res.status(200).send(createMatchDto) as Response<Match>;
+    return res.status(201).send(createMatchDto) as Response<Match>;
   }
 }
