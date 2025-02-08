@@ -53,54 +53,76 @@ describe('MatchService', () => {
   });
 
   it('should update rank (regular)', async () => {
-    const id1 = "jordan";
-    const id2 = "laurent";
-    const draw = false;
-
-    const winnerPlayer = {
+    const winner = {
       id: "jordan",
       rank: 1000,
     }
+    const loser = {
+      id: "laurent",
+      rank: 1000,
+    }
+    const draw = false;
+    
+    await playerRepository.save(winner);
+    await playerRepository.save(loser);
 
-    const loserPlayer = {
+    const result = await service.computeRank(winner, loser, draw);
+    if (result) {
+      expect(result.winnerPlayer.rank).toEqual(1016);
+      expect(result.loserPlayer.rank).toEqual(984);
+    }
+  });
+
+  it('should compute new ranks (draw)', async () => {
+    const winner = {
+      id: "jordan",
+      rank: 1200,
+    }
+    const loser = {
+      id: "laurent",
+      rank: 800,
+    }
+    const draw = true;
+
+    await playerRepository.save(winner);
+    await playerRepository.save(loser);
+
+    const result = service.computeRank(winner, loser, draw);
+    if (result) {
+      expect(result.winnerPlayer.rank).toEqual(1187);
+      expect(result.loserPlayer.rank).toEqual(813);
+    }
+  });
+
+  it('should compute probability (1)', async () => {
+    const winner = {
+      id: "jordan",
+      rank: 1000,
+    }
+    const loser = {
       id: "laurent",
       rank: 1000,
     }
 
-    await playerRepository.save(winnerPlayer);
-    await playerRepository.save(loserPlayer);
+    const { winrate, loserate } = service.computeProbability(winner.rank, loser.rank);
+    expect(winrate).toEqual(0.5);
+    expect(loserate).toEqual(0.5);
+  })
 
-    const result = await service.updateElo(id1, id2, draw);
-    if (result) {
-      expect(result.winner.rank).toEqual(1016);
-      expect(result.loser.rank).toEqual(984);
-    }
-  });
-
-  it('should update rank (draw)', async () => {
-    const id1 = "jordan";
-    const id2 = "laurent";
-    const draw = true;
-
-    const winnerPlayer = {
+  it('should compute probability (2)', async () => {
+    const winner = {
       id: "jordan",
       rank: 1200,
     }
-
-    const loserPlayer = {
+    const loser = {
       id: "laurent",
       rank: 800,
     }
 
-    await playerRepository.save(winnerPlayer);
-    await playerRepository.save(loserPlayer);
-
-    const result = await service.updateElo(id1, id2, draw);
-    if (result) {
-      expect(result.winner.rank).toEqual(1187);
-      expect(result.loser.rank).toEqual(813);
-    }
-  });
+    const { winrate, loserate } = service.computeProbability(winner.rank, loser.rank);
+    expect(winrate).toBeCloseTo(0.91, 2); // Vérifie au centième près
+    expect(loserate).toBeCloseTo(0.09, 2); // Vérifie au centième près
+  })
 
   it('should emit a match update', async () => {
     const player = {

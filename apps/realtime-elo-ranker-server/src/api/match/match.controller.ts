@@ -41,7 +41,7 @@ export class MatchController {
     }
 
     void this.appService.create(createMatchDto).then(() => {
-      void this.appService.updateElo(winner, loser, draw);
+      void this.appService.updateRank(winner, loser, draw);
     });
 
     return res.status(201).send(createMatchDto) as Response<Match>;
