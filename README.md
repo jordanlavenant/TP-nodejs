@@ -1,6 +1,83 @@
 # Realtime Elo Ranker
 
+LAVENANT Jordan - 31 - BUT Informatique  - 2024 - 2025
+
 Realtime Elo Ranker est une application web permettant de simuler des matchs entre des joueurs et de calculer et afficher leur classement Elo en temps réel.
+
+## Démonstration
+
+### Vidéo
+
+[Vidéo de démonstration ici](./assets/demo.mp4)
+
+### Tests unitaires 
+
+Récapitulatif des tests unitaires des controlleurs et des services :
+
+![Tests unitaires](./assets/tests.png)
+
+Exemple du tests unitaire des calculs de classement :
+
+![Tests unitaires](./assets/test-classement.png)
+
+Fichier de référence : [match.service.spec.ts](./apps/realtime-elo-ranker-server/src/api/match/match.service.spec.ts)
+
+## Fonctionnalités
+
+- Créer des joueurs
+- Saisir les résultats des matchs
+- Afficher le classement des joueurs
+- Mettre à jour le classement en temps réel (Event Emitter)
+- Calculer le classement des joueurs en fonction des résultats des matchs
+- Tests unitaires des controlleurs (respect du swagger)
+- Tests unitaires des services (respect du calcul du classement)
+- Logger des évènements métiers
+
+## Lancer l'application serveur
+
+```bash
+pnpm run apps:server:dev
+```
+
+Serveur accessible à [http://localhost:3000](http://localhost:3000).
+
+## Lancer l'application cliente
+
+*Prérequis :*
+
+Le client repose sur une source CSS exposée par la librairie `libs/ui` (@realtime-elo-ranker/libs/ui). Il est nécessaire de construire la lib pour rendre la source accessible.
+
+Pour ce faire :
+
+```bash
+pnpm run libs:ui:build
+```
+
+**Puis**
+
+Lancer l'application :
+
+```bash
+pnpm run apps:client:dev
+```
+
+Client accessible à [http://localhost:3001](http://localhost:3001).
+
+## Lancer la doc swagger
+
+```bash
+pnpm run docs:swagger:start
+```
+
+Doc accessible à [http://localhost:3002/api-docs](http://localhost:3002/api-docs).
+
+## Lancer le mock de l'API
+
+```bash
+pnpm run apps:api-mock:start
+```
+
+Le mock de l'API sera accessible à l'adresse `http://localhost:8080`. Il ne doit pas être lancé en même temps que le serveur de l'application.
 
 ## Conteneurs Métiers
 
@@ -30,52 +107,6 @@ Realtime Elo Ranker est une application web permettant de simuler des matchs ent
 
 `libs/ui` : Librairie de composants graphiques
   - Contiendra les composants graphiques réutilisables pour le client
-
-## Lancer l'application cliente
-
-*Prérequis :*
-
-Le client repose sur une source CSS exposée par la librairie `libs/ui` (@realtime-elo-ranker/libs/ui). Il est nécessaire de construire la lib pour rendre la source accessible.
-
-Pour ce faire :
-
-```bash
-pnpm run libs:ui:build
-```
-
-**Puis**
-
-Lancer l'application :
-
-```bash
-pnpm run apps:client:dev
-```
-
-## Lancer la doc swagger
-
-```bash
-pnpm run docs:swagger:start
-```
-
-Le serveur Swagger sera accessible à l'adresse `http://localhost:3001/api-docs`.
-
-Le serveur est en hot-reload : les modifications apportées au `swagger.yaml` seront automatiquement prises en compte.
-
-**Note :** Si le live-reload ne fonctionne pas, pensez à forwarder le port `35729` dans l'IDE.
-
-## Lancer le mock de l'API
-
-```bash
-pnpm run apps:api-mock:start
-```
-
-Le mock de l'API sera accessible à l'adresse `http://localhost:8080`. Il ne doit pas être lancé en même temps que le serveur de l'application.
-
-## Lancer l'application serveur
-
-```bash
-pnpm run apps:server:dev
-```
 
 # Architecture
 

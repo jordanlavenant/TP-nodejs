@@ -32,7 +32,9 @@ describe('MatchController', () => {
 
     controller = module.get<MatchController>(MatchController);
     service = module.get<MatchService>(MatchService);
-    playerRepository = module.get<Repository<Player>>(getRepositoryToken(Player));
+    playerRepository = module.get<Repository<Player>>(
+      getRepositoryToken(Player),
+    );
   });
 
   it('should be defined', () => {
@@ -58,7 +60,7 @@ describe('MatchController', () => {
     expect(res.status).toHaveBeenCalledWith(422);
     expect(res.send).toHaveBeenCalledWith({
       code: 0,
-      message: "Le gagnant et le perdant ne peuvent pas être la même personne",
+      message: 'Le gagnant et le perdant ne peuvent pas être la même personne',
     });
   });
 
@@ -109,6 +111,5 @@ describe('MatchController', () => {
 
     expect(res.status).toHaveBeenCalledWith(201);
     expect(res.send).toHaveBeenCalledWith(createMatchDto);
-
   });
 });

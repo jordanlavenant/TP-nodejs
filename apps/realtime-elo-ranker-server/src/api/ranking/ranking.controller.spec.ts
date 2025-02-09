@@ -29,7 +29,9 @@ describe('RankingController', () => {
 
     controller = module.get<RankingController>(RankingController);
     service = module.get<RankingService>(RankingService);
-    playerRepository = module.get<Repository<Player>>(getRepositoryToken(Player));
+    playerRepository = module.get<Repository<Player>>(
+      getRepositoryToken(Player),
+    );
   });
 
   it('should be defined', () => {

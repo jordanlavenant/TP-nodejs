@@ -27,7 +27,9 @@ describe('MatchService', () => {
 
     service = module.get<MatchService>(MatchService);
     matchRepository = module.get<Repository<Match>>(getRepositoryToken(Match));
-    playerRepository = module.get<Repository<Player>>(getRepositoryToken(Player));
+    playerRepository = module.get<Repository<Player>>(
+      getRepositoryToken(Player),
+    );
   });
 
   it('should be defined', () => {
@@ -36,10 +38,10 @@ describe('MatchService', () => {
 
   // Mock match
   const match: Match = {
-    winner: "jordan",
-    loser: "laurent",
+    winner: 'jordan',
+    loser: 'laurent',
     draw: false,
-  }
+  };
 
   it('should return all matches', async () => {
     await matchRepository.save(match);
@@ -54,19 +56,19 @@ describe('MatchService', () => {
 
   it('should update rank (regular)', async () => {
     const winner = {
-      id: "jordan",
+      id: 'jordan',
       rank: 1000,
-    }
+    };
     const loser = {
-      id: "laurent",
+      id: 'laurent',
       rank: 1000,
-    }
+    };
     const draw = false;
-    
+
     await playerRepository.save(winner);
     await playerRepository.save(loser);
 
-    const result = await service.computeRank(winner, loser, draw);
+    const result = service.computeRank(winner, loser, draw);
     if (result) {
       expect(result.winnerPlayer.rank).toEqual(1016);
       expect(result.loserPlayer.rank).toEqual(984);
@@ -75,13 +77,13 @@ describe('MatchService', () => {
 
   it('should compute new ranks (draw)', async () => {
     const winner = {
-      id: "jordan",
+      id: 'jordan',
       rank: 1200,
-    }
+    };
     const loser = {
-      id: "laurent",
+      id: 'laurent',
       rank: 800,
-    }
+    };
     const draw = true;
 
     await playerRepository.save(winner);
@@ -94,41 +96,47 @@ describe('MatchService', () => {
     }
   });
 
-  it('should compute probability (1)', async () => {
+  it('should compute probability (1)', () => {
     const winner = {
-      id: "jordan",
+      id: 'jordan',
       rank: 1000,
-    }
+    };
     const loser = {
-      id: "laurent",
+      id: 'laurent',
       rank: 1000,
-    }
+    };
 
-    const { winrate, loserate } = service.computeProbability(winner.rank, loser.rank);
+    const { winrate, loserate } = service.computeProbability(
+      winner.rank,
+      loser.rank,
+    );
     expect(winrate).toEqual(0.5);
     expect(loserate).toEqual(0.5);
-  })
+  });
 
-  it('should compute probability (2)', async () => {
+  it('should compute probability (2)', () => {
     const winner = {
-      id: "jordan",
+      id: 'jordan',
       rank: 1200,
-    }
+    };
     const loser = {
-      id: "laurent",
+      id: 'laurent',
       rank: 800,
-    }
+    };
 
-    const { winrate, loserate } = service.computeProbability(winner.rank, loser.rank);
+    const { winrate, loserate } = service.computeProbability(
+      winner.rank,
+      loser.rank,
+    );
     expect(winrate).toBeCloseTo(0.91, 2); // Vérifie au centième près
     expect(loserate).toBeCloseTo(0.09, 2); // Vérifie au centième près
-  })
+  });
 
-  it('should emit a match update', async () => {
+  it('should emit a match update', () => {
     const player = {
       id: 'jordan',
       rank: 1000,
-    }
+    };
 
     jest.spyOn(service, 'emitPlayerUpdate').mockImplementation(() => {});
 

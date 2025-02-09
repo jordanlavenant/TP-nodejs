@@ -29,8 +29,8 @@ export class PlayerService {
   create(player: Player): Promise<Player> {
     return this.findAll().then((players) => {
       if (players.length === 0) {
+        player.rank = 1000;
         this.emitPlayerUpdate(player);
-
         return this.save(player);
       } else {
         const avgRank =

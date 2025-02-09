@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Res } from '@nestjs/common';
+import { Controller, Post, Body, Res, Logger } from '@nestjs/common';
 import { PlayerService } from './player.service';
 import { Player } from '../../entities/player.entity';
 import { Response } from 'express';
@@ -15,6 +15,7 @@ export class PlayerController {
     @Res() res: Response,
   ): Promise<Response<Player | Error>> {
     if (!createPlayerDto.id) {
+      Logger.error("L'id du joueur est obligatoire");
       return res.status(400).send({
         code: 0,
         message: "L'id du joueur est obligatoire",
@@ -24,6 +25,7 @@ export class PlayerController {
     const alreadyExist = await this.appService.playerExists(createPlayerDto.id);
 
     if (alreadyExist) {
+      Logger.error('Le joueur existe déjà');
       return res.status(409).send({
         code: 0,
         message: 'Le joueur existe déjà',
@@ -32,6 +34,7 @@ export class PlayerController {
 
     await this.appService.create(createPlayerDto);
 
+    Logger.log(`Joueur ${createPlayerDto.id} créé avec succès`);
     return res.status(201).send(createPlayerDto) as Response<Player>;
   }
 }

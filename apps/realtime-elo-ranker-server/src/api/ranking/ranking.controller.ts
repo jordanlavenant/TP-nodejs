@@ -1,4 +1,4 @@
-import { Controller, Get, Res, Sse } from '@nestjs/common';
+import { Controller, Get, Logger, Res, Sse } from '@nestjs/common';
 import { RankingService } from './ranking.service';
 import { Player } from '../../entities/player.entity';
 import { Response } from 'express';
@@ -18,6 +18,9 @@ export class RankingController {
   async findAll(@Res() res: Response): Promise<Response<Player[] | Error>> {
     const players = await this.appService.findAll();
     if (players.length === 0) {
+      Logger.error(
+        "Le classement n'est pas disponible car aucun joueur n'existe",
+      );
       return res.status(404).send({
         code: 0,
         message: "Le classement n'est pas disponible car aucun joueur n'existe",
@@ -30,6 +33,7 @@ export class RankingController {
   subscribeToEvents(): Observable<MessageEvent> {
     return fromEvent(this.eventEmitter, RANKING_EVENT).pipe(
       map((payload) => {
+        Logger.log('Event sent');
         return {
           data: JSON.stringify(payload),
         } as MessageEvent;

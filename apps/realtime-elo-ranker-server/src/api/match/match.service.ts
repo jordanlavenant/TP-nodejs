@@ -33,13 +33,18 @@ export class MatchService {
     const loserate = 1 - winrate;
     return { winrate, loserate };
   };
-  
+
   computeRank = (winner: Player, loser: Player, draw: boolean) => {
-    const { winrate, loserate } = this.computeProbability(winner.rank, loser.rank);
-  
-    const newWinnerRank = winner.rank + PONDERATION * ((draw ? 0.5 : 1) - winrate);
-    const newLoserRank = loser.rank + PONDERATION * ((draw ? 0.5 : 0) - loserate);
-  
+    const { winrate, loserate } = this.computeProbability(
+      winner.rank,
+      loser.rank,
+    );
+
+    const newWinnerRank =
+      winner.rank + PONDERATION * ((draw ? 0.5 : 1) - winrate);
+    const newLoserRank =
+      loser.rank + PONDERATION * ((draw ? 0.5 : 0) - loserate);
+
     return {
       winnerPlayer: {
         id: winner.id,
@@ -51,15 +56,22 @@ export class MatchService {
       },
     };
   };
-  
 
-  async updateRank(winner: string, loser: string, draw: boolean): Promise<{winner: Player, loser: Player} | void> {
+  async updateRank(
+    winner: string,
+    loser: string,
+    draw: boolean,
+  ): Promise<{ winner: Player; loser: Player } | void> {
     const winnerDB = await this.players.findOne({ where: { id: winner } });
     const loserDB = await this.players.findOne({ where: { id: loser } });
 
     if (!winnerDB || !loserDB) return;
 
-    const { winnerPlayer, loserPlayer } = this.computeRank(winnerDB, loserDB, draw);
+    const { winnerPlayer, loserPlayer } = this.computeRank(
+      winnerDB,
+      loserDB,
+      draw,
+    );
 
     await this.players.save(winnerPlayer).then(() => {
       this.emitPlayerUpdate(winnerPlayer);

@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, Logger, Post, Res } from '@nestjs/common';
 import { Match } from '../../entities/match.entity';
 import { MatchService } from './match.service';
 import { Response } from 'express';
@@ -22,6 +22,9 @@ export class MatchController {
 
     // Check if winner and loser are the same
     if (winner === loser) {
+      Logger.error(
+        'Le gagnant et le perdant ne peuvent pas être la même personne',
+      );
       return res.status(422).send({
         code: 0,
         message:
@@ -34,6 +37,7 @@ export class MatchController {
     const loserExist = await this.playerService.playerExists(loser);
 
     if (!winnerExist || !loserExist) {
+      Logger.error("Soit le gagnant, soit le perdant indiqué n'existe pas");
       return res.status(422).send({
         code: 0,
         message: "Soit le gagnant, soit le perdant indiqué n'existe pas",
@@ -44,6 +48,7 @@ export class MatchController {
       void this.appService.updateRank(winner, loser, draw);
     });
 
+    Logger.log('Match entre ' + winner + ' et ' + loser + ' créé avec succès');
     return res.status(201).send(createMatchDto) as Response<Match>;
   }
 }

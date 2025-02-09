@@ -24,7 +24,9 @@ describe('PlayerService', () => {
     }).compile();
 
     service = module.get<PlayerService>(PlayerService);
-    playerRepository = module.get<Repository<Player>>(getRepositoryToken(Player));
+    playerRepository = module.get<Repository<Player>>(
+      getRepositoryToken(Player),
+    );
   });
 
   it('should be defined', () => {
@@ -33,9 +35,9 @@ describe('PlayerService', () => {
 
   // Mock player
   const player: Player = {
-    id: "jordan",
+    id: 'jordan',
     rank: 1000,
-  }
+  };
 
   it('should return player=jordan', async () => {
     await playerRepository.save(player);

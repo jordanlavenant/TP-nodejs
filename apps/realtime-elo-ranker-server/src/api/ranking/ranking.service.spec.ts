@@ -26,7 +26,9 @@ describe('RankingService', () => {
     }).compile();
 
     service = module.get<RankingService>(RankingService);
-    playerRepository = module.get<Repository<Player>>(getRepositoryToken(Player));
+    playerRepository = module.get<Repository<Player>>(
+      getRepositoryToken(Player),
+    );
   });
 
   it('should be defined', () => {
@@ -35,9 +37,9 @@ describe('RankingService', () => {
 
   // Mock player
   const player: Player = {
-    id: "jordan",
+    id: 'jordan',
     rank: 1000,
-  }
+  };
 
   it('should return players=null', async () => {
     jest.spyOn(service, 'findAll').mockResolvedValue([]);
